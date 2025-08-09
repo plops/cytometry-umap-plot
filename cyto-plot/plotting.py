@@ -4,9 +4,11 @@ import umap.plot
 from bokeh.plotting import save, output_file
 from pathlib import Path
 from logger import logger
+import cuml
 
 def generate_interactive_plot(
-        embedding: np.ndarray,
+        cuml_umap: 'cuml.UMAP',
+        #embedding: np.ndarray,
         source_df: pd.DataFrame,
         output_path: Path
 ):
@@ -21,18 +23,19 @@ def generate_interactive_plot(
         def __init__(self, embedding):
             self.embedding_ = embedding
 
-    dummy_mapper = DummyUMAP(embedding)
+    dummy_mapper = DummyUMAP(cuml_umap.embedding_)
 
     # Use the 'filename' column for coloring points and for hover information
     labels = source_df['filename']
-    hover_data = pd.DataFrame({
-        'x': embedding[:, 0],
-        'y': embedding[:, 1],
-        'File': labels
-    })
+    # hover_data = pd.DataFrame({
+    #     'x': embedding[:, 0],
+    #     'y': embedding[:, 1],
+    #     'File': labels
+    # })
 
-    logger.debug(f"Creating interactive plot with {len(embedding)} points")
+    # logger.debug(f"Creating interactive plot with {len(cuml_umap.embedding_)} points")
     p = umap.plot.interactive(
+        # cuml_umap.,
         dummy_mapper,
         labels=labels,
         #hover_data=hover_data,

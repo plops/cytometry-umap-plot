@@ -29,6 +29,8 @@ data_processing:
 # See cuML and umap-learn docs for details
 # ------------------
 umap_params:
+  #init: "random"
   n_neighbors: 15
   min_dist: 0.1
   n_components: 2
+  #n_epochs: 500

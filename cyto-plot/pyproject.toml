@@ -1,7 +1,7 @@
 [project]
 name = "cyto-plot"
 version = "0.1.0"
-description = "Add your description here"
+description = "Plot cytometry data from FCS files using UMAP and Bokeh"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [

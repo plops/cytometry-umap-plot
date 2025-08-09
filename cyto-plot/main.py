@@ -44,11 +44,11 @@ def main_pipeline():
         logger.debug(f"Marker columns: {marker_columns}")
 
         # 5. Run UMAP
-        embedding = analysis.run_gpu_umap(umap_data, cfg.umap_params, joblib_memory)
+        cuml_umap = analysis.run_gpu_umap(umap_data, cfg.umap_params, joblib_memory)
 
         # 6. Generate and Save Plot
         output_plot_path = Path(cfg.paths.output_dir) / cfg.paths.plot_filename
-        plotting.generate_interactive_plot(embedding, data_df, output_plot_path)
+        plotting.generate_interactive_plot(cuml_umap, data_df, output_plot_path)
 
         logger.info(f"Pipeline completed successfully. Output saved to {output_plot_path}")
 
