@@ -86,64 +86,52 @@ issues, clearing the cache/ directory will force a fresh computation.
 
 ## Interpretation of the example dataset:
 
-The dataset contains the following columns: 'FSC-A', 'FSC-H', 'FSC-W',
-'SSC-A', 'SSC-H', 'SSC-W', 'BV421-A', 'BV510-A', 'BV605-A', 'BV650-A',
-'CD4', 'BB515-A', 'CD8', 'PE-CF594-A', 'Live/Dead', 'CD3',
-'APC-R700-A', 'CD45'.
+The experiment in the publication "Determining the role of CD4+ and
+CD8+ T-cells in the LST response" (PMCID: PMC10622560)
+https://pmc.ncbi.nlm.nih.gov/articles/PMC10622560/ investigates the
+cellular basis of the Leishmanin Skin Test (LST), a delayed-type
+hypersensitivity response crucial for diagnosing and assessing
+immunity to Leishmaniasis. The researchers used flow cytometry to
+analyze splenocytes from mice to validate their LST antigen and to
+determine the roles of different T-cell populations.
 
-Note: This section was written by Google Gemini 2.5 Pro. I have no
-idea about cytometry experiments.
+Looking at the diagram in Figure 2 of the paper, I don't think UMAP is
+required for this data.
 
-The dataset is part of a study aimed at understanding the roles of
-CD4+ and CD8+ T-cells in the immune response to a *Leishmania
-donovani* antigen, using a mouse model.
 
-Here is a breakdown of what the FCS columns mean in the context of
-this specific experiment:
+Here is a detailed explanation of what each FCS column represents in
+the context of this study:
 
-### Core Cell Properties (Scatter Channels)
+### **Light Scatter Columns: Defining Basic Cell Properties**
 
-These columns measure the intrinsic physical characteristics of the
-splenocytes (cells from the spleen).
+These columns are fundamental to flow cytometry and are used for the initial identification and quality control of the cell populations being analyzed.
 
-*   **'FSC-A', 'FSC-H', 'FSC-W' (Forward Scatter):** These parameters are used to determine the size of the cells being analyzed. This helps in the initial step of distinguishing lymphocytes (which are the primary focus here, including T-cells) from larger cells like macrophages or smaller debris. The width parameter is crucial for excluding clumps of cells (doublets) to ensure that each event analyzed corresponds to a single cell.
-*   **'SSC-A', 'SSC-H', 'SSC-W' (Side Scatter):** These columns measure the internal complexity or granularity of the cells. Lymphocytes typically have low side scatter, while other immune cells like granulocytes (e.g., neutrophils) have high side scatter. This is another key parameter for isolating the lymphocyte population from the total splenocytes.
+*   **'FSC-A' (Forward Scatter - Area), 'FSC-H' (Forward Scatter - Height), and 'FSC-W' (Forward Scatter - Width):** Forward scatter is proportional to the size of a cell. In this experiment, these parameters would be used to focus the analysis on lymphocytes, which are typically smaller than other splenocytes like macrophages. The FSC-A versus FSC-H plot is also a primary tool to exclude "doublets" – two or more cells stuck together that would otherwise be incorrectly analyzed as a single, larger cell.
 
-### Fluorescence and Specific Cell Markers
+*   **'SSC-A' (Side Scatter - Area), 'SSC-H' (Side Scatter - Height), and 'SSC-W' (Side Scatter - Width):** Side scatter reflects the internal complexity or granularity of a cell. Lymphocytes have a low side scatter signal. This property is used to distinguish them from granulocytes (like neutrophils), which have a high side scatter signal due to their granular cytoplasm.
 
-These columns measure the light emitted from fluorescent dyes that
-have been used to label specific proteins (markers) on or in the
-cells. The goal is to identify and quantify different T-cell
-populations.
+### **Fluorescence Channels and Cellular Markers: Identifying and Quantifying Immune Cells**
 
-*   **'Live/Dead':** This channel is used to distinguish viable cells from dead cells. A fluorescent dye that can only enter cells with compromised membranes is used. This is a critical quality control step, as dead cells can non-specifically bind antibodies, leading to false-positive signals. For accurate analysis, dead cells are excluded.
-*   **'CD45':** This is a pan-leukocyte marker, meaning it is present on nearly all white blood cells (leukocytes). In this experiment, it's used to positively identify all immune cells within the spleen sample and distinguish them from any non-hematopoietic cells or debris.
-*   **'CD3':** This marker is a defining protein of the T-cell lineage. Staining for CD3 allows the researchers to specifically identify all T-cells within the broader population of CD45+ leukocytes.
-*   **'CD4':** This marker identifies a major subset of T-cells known as helper T-cells. The experiment uses an antibody labeled with a fluorochrome to detect CD4. Based on the experimental conditions (e.g., "Spleenocytes_Tcells_Vaccinated_GK15"), the GK1.5 antibody was used, which is known to deplete CD4+ T-cells. This column is therefore essential for confirming the success of this depletion. The "FMO - no CD4 staining" control is used to set the gate for what is considered a positive signal for CD4.
-*   **'CD8':** This marker identifies another major T-cell subset, the cytotoxic T-cells. The experiment includes a condition ("Spleenocytes_Tcells_Vaccinated_aCD8") where these cells are depleted. This column is used to quantify the CD8+ T-cell population and verify the depletion.
+These columns represent the fluorescence emitted from specific dyes (fluorochromes) that are attached to antibodies. These antibodies, in turn, bind to specific proteins (markers) on the cell surface, allowing for the identification and counting of different cell types. The "-A" in names like 'BV421-A' signifies that the **Area** of the fluorescence signal was measured, which is the standard method for quantifying the total fluorescence of a cell as it passes the laser.
 
-### Unassigned Fluorescence Channels
+*   **'Live/Dead':** This channel is for a viability stain. This is a critical first step in the data analysis to exclude dead cells. Dead cells can non-specifically bind antibodies, which would lead to inaccurate results. For this experiment, only live cells are included in the subsequent analysis of T-cell populations.
 
-These are the detector channels that are capturing the fluorescence
-signals from the antibody-dye conjugates. While the experiment
-description doesn't explicitly link each dye to each marker, we can
-infer the likely pairings.
+*   **'CD45':** This is a pan-leukocyte marker, meaning it is found on all white blood cells. Staining for CD45 is used to create a "leukocyte gate," ensuring that the analysis is restricted to immune cells from the spleen and excludes other cell types or debris.
 
-*   **'BV421-A', 'BV510-A', 'BV605-A', 'BV650-A', 'BB515-A', 'PE-CF594-A', 'APC-R700-A':** These are the specific fluorescence detectors used. Each of the markers (CD45, CD3, CD4, CD8) and the Live/Dead stain would have been labeled with a dye corresponding to one of these channels. For example, the anti-CD3 antibody might be conjugated to PE-CF594, the anti-CD4 antibody to BV605, and so on. The exact combination would be detailed in the methods section of the associated manuscript. The "-A" signifies that the area of the signal pulse was measured, which is the standard and most robust way to quantify fluorescence intensity.
+*   **'CD3':** This is a pan-T-cell marker. It is part of the T-cell receptor complex and is used to positively identify all T-cells within the CD45-positive leukocyte population. This is a crucial step before drilling down into the specific T-cell subsets.
 
-### Experimental Controls and Conditions
+*   **'CD4':** This marker identifies helper T-cells. A central goal of this study was to determine the role of these cells in the LST response. The experiment involved depleting CD4+ T-cells using an anti-CD4 monoclonal antibody (clone GK1.5). The 'CD4' column is therefore essential for quantifying the number of these cells and, as stated in the paper, to "confirm" the successful depletion of this cell population in the treated mice.
 
-The file names and conditions listed provide further insight:
+*   **'CD8':** This marker identifies cytotoxic T-cells. Similar to CD4+ cells, the study aimed to understand the contribution of CD8+ T-cells. This was achieved by depleting them with an anti-CD8 antibody (clone YTS169.4). The 'CD8' column is used to quantify these cells and verify the effectiveness of the depletion. The paper's conclusion that "both the CD4+ and CD8+ T-cells are necessary for the leishmanin skin test response" is directly supported by the data from these channels.
 
-*   **Unstained Control:** Used to measure the baseline autofluorescence of the cells. This helps to determine the background signal in each channel.
-*   **FMO (Fluorescence Minus One) Control:** This is a crucial control for setting accurate gates, especially for the CD4 marker as mentioned. It involves staining the cells with all the fluorescent antibodies *except* one (in this case, the anti-CD4 antibody). This reveals the spread of fluorescence from the other dyes into the channel of the omitted one, allowing for a more precise distinction between positive and negative populations.
-*   **Rag2 KO Control:** Rag2 knockout mice lack functional T-cells and B-cells. These mice serve as a perfect negative control, confirming that the signals being detected for CD3, CD4, and CD8 are indeed from these cell types, as they should be absent in these mice.
-*   **Undepleted (Saline):** This group represents the normal immune response in vaccinated mice without any cell depletion, serving as the positive control or baseline for the T-cell response.
-*   **Depleted Samples (GK1.5 for CD4, aCD8 for CD8):** These are the core experimental groups. The data in these FCS files is used to confirm that the respective T-cell populations were successfully removed and to study the impact of their absence on the overall immune response.
+### **Fluorochrome Channels: The Specific Detectors**
 
-## Related Paper
+These column names refer to the specific fluorescent dyes and the detectors (channels) in the flow cytometer that measure their light emission. Each of the cellular markers described above would have been linked to one of these fluorochromes.
 
-Nat Commun. 2023 Nov 2;14:7028. doi: 10.1038/s41467-023-42732-2
-Production of leishmanin skin test antigen from Leishmania donovani for future reintroduction in the field
+*   **'BV421-A', 'BV510-A', 'BV605-A', 'BV650-A':** These are Brilliant Violet™ dyes, a family of polymer-based dyes known for their exceptional brightness. The number indicates the peak emission wavelength (e.g., 421 nm).
 
-https://pmc.ncbi.nlm.nih.gov/articles/PMC10622560/
+*   **'BB515-A':** This refers to a Brilliant Blue dye, another bright fluorochrome with an emission around 515 nm.
+
+*   **'PE-CF594-A':** This is a tandem dye. Phycoerythrin (PE) is excited by the laser and transfers its energy to the CF594 dye, which then emits light at a longer wavelength (around 594 nm). Tandem dyes are used to increase the number of different markers that can be measured simultaneously in a single experiment.
+
+*   **'APC-R700-A':** This is another tandem dye, where Allophycocyanin (APC) is conjugated to a dye that emits light at approximately 700 nm.
