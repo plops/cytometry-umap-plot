@@ -1,0 +1,53 @@
+2025-08-09T14:44:18 UTC | INFO | cyto-plot | Starting Cytometry Analysis Pipeline
+2025-08-09T14:44:18 UTC | INFO | cyto-plot | Setting up cache directory
+2025-08-09T14:44:18 UTC | INFO | cyto-plot | Loading .fcs files from '../data/fcs/'...
+2025-08-09T14:44:18 UTC | INFO | cyto-plot | Sampling a maximum of 6200 events per file.
+2025-08-09T14:44:18 UTC | INFO | cyto-plot | Found 8 .fcs files to process
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | Reading file: Spleenocytes_Tcells_Vaccinated_GK15__2_007.fcs
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | Sampling 6200 events from Spleenocytes_Tcells_Vaccinated_GK15__2_007.fcs (original size: 62690)
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | Successfully loaded 6200 events from Spleenocytes_Tcells_Vaccinated_GK15__2_007.fcs
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | Reading file: Spleenocytes_Tcells_Rag2KO_005.fcs
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | Sampling 6200 events from Spleenocytes_Tcells_Rag2KO_005.fcs (original size: 96476)
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | Successfully loaded 6200 events from Spleenocytes_Tcells_Rag2KO_005.fcs
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | Reading file: Spleenocytes_Tcells_Vaccinated_GK15_006.fcs
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | Sampling 6200 events from Spleenocytes_Tcells_Vaccinated_GK15_006.fcs (original size: 64785)
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | Successfully loaded 6200 events from Spleenocytes_Tcells_Vaccinated_GK15_006.fcs
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | Reading file: Spleenocytes_Tcells_Vaccinated_Saline_004.fcs
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | Sampling 6200 events from Spleenocytes_Tcells_Vaccinated_Saline_004.fcs (original size: 65121)
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | Successfully loaded 6200 events from Spleenocytes_Tcells_Vaccinated_Saline_004.fcs
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | Reading file: Spleenocytes_Tcells_FMO- no CD4 staining_002.fcs
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | Sampling 6200 events from Spleenocytes_Tcells_FMO- no CD4 staining_002.fcs (original size: 50000)
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | Successfully loaded 6200 events from Spleenocytes_Tcells_FMO- no CD4 staining_002.fcs
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | Reading file: Spleenocytes_Tcells_Unstained_control_001.fcs
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | Sampling 6200 events from Spleenocytes_Tcells_Unstained_control_001.fcs (original size: 50000)
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | Successfully loaded 6200 events from Spleenocytes_Tcells_Unstained_control_001.fcs
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | Reading file: Spleenocytes_Tcells_Vaccinated_aCD8_003.fcs
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | Sampling 6200 events from Spleenocytes_Tcells_Vaccinated_aCD8_003.fcs (original size: 61498)
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | Successfully loaded 6200 events from Spleenocytes_Tcells_Vaccinated_aCD8_003.fcs
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | Reading file: Spleenocytes_Tcells_Vaccinated_GK15__3_009.fcs
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | Sampling 6200 events from Spleenocytes_Tcells_Vaccinated_GK15__3_009.fcs (original size: 62685)
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | Successfully loaded 6200 events from Spleenocytes_Tcells_Vaccinated_GK15__3_009.fcs
+2025-08-09T14:44:18 UTC | INFO | cyto-plot | Combining loaded files into a single DataFrame...
+2025-08-09T14:44:18 UTC | INFO | cyto-plot | Successfully combined 49600 total events from 8 files
+2025-08-09T14:44:18 UTC | INFO | cyto-plot | Successfully loaded 49600 events from 8 files
+2025-08-09T14:44:18 UTC | INFO | cyto-plot | Using 18 columns for UMAP analysis
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | Marker columns: ['FSC-A', 'FSC-H', 'FSC-W', 'SSC-A', 'SSC-H', 'SSC-W', 'BV421-A', 'BV510-A', 'BV605-A', 'BV650-A', 'CD4', 'BB515-A', 'CD8', 'PE-CF594-A', 'Live/Dead', 'CD3', 'APC-R700-A', 'CD45']
+2025-08-09T14:44:18 UTC | INFO | cyto-plot | Performing UMAP on GPU with cuML...
+2025-08-09T14:44:18 UTC | INFO | cyto-plot | Data shape for UMAP: (49600, 18)
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | UMAP parameters: {'n_neighbors': 30, 'min_dist': 0.1, 'n_components': 3}
+2025-08-09T14:44:18 UTC | INFO | cyto-plot | Starting UMAP computation...
+2025-08-09T14:44:18 UTC | INFO | cyto-plot | UMAP computation completed. Embedding shape: (49600, 3)
+2025-08-09T14:44:18 UTC | INFO | cyto-plot | Performing DBSCAN on GPU with cuML...
+2025-08-09T14:44:18 UTC | DEBUG | cyto-plot | DBSCAN parameters: {'eps': 0.4, 'min_samples': 100}
+2025-08-09T14:44:18 UTC | INFO | cyto-plot | Starting DBSCAN computation...
+2025-08-09T14:44:19 UTC | INFO | cyto-plot | DBSCAN computation completed.
+2025-08-09T14:44:19 UTC | DEBUG | cyto-plot | Number of clusters found: 18
+2025-08-09T14:44:19 UTC | INFO | cyto-plot | Performing UMAP on GPU with cuML...
+2025-08-09T14:44:19 UTC | INFO | cyto-plot | Data shape for UMAP: (49600, 18)
+2025-08-09T14:44:19 UTC | DEBUG | cyto-plot | UMAP parameters: {'n_neighbors': 30, 'min_dist': 0.1, 'n_components': 2}
+2025-08-09T14:44:19 UTC | INFO | cyto-plot | Starting UMAP computation...
+2025-08-09T14:44:19 UTC | INFO | cyto-plot | UMAP computation completed. Embedding shape: (49600, 2)
+2025-08-09T14:44:19 UTC | INFO | cyto-plot | Generating interactive plot and saving to output/interactive_umap_plot.html...
+2025-08-09T14:44:19 UTC | INFO | cyto-plot | Found 18 unique clusters. The largest is cluster '1' with 13133 points.
+2025-08-09T14:44:19 UTC | INFO | cyto-plot | Interactive plot saved successfully to output/interactive_umap_plot.html
+2025-08-09T14:44:19 UTC | INFO | cyto-plot | Pipeline completed successfully. Output saved to output/interactive_umap_plot.html
