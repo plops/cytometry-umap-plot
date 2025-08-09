@@ -39,6 +39,10 @@ def load_fcs_data(
                         f"Sampling {max_events} events from {fcs_file.name} (original size: {len(df)})"
                     )
                     df = df.sample(n=max_events, random_state=42)
+                else:
+                    logger.debug(
+                        f"Using all {len(df)} events from {fcs_file.name} (no sampling applied)"
+                    )
 
                 # Add filename for labeling and tracking origin
                 df["filename"] = fcs_file.name

@@ -11,7 +11,7 @@ paths:
 # Logging Configuration
 # ------------------
 logging:
-  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  level: "DEBUG"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
   log_file: "cyto-plot.log"
 
 # ------------------
@@ -19,7 +19,7 @@ logging:
 # ------------------
 data_processing:
   # Max events to load per file. Set to -1 to load all events.
-  max_events_per_file: 6_000 # For more than 6000 points the UMAP is always noisy
+  max_events_per_file: 6_200 # For more than 6000 points the UMAP is always noisy
   # Columns to exclude from UMAP analysis.
   # 'filename' is added during loading for labeling purposes.
   exclude_columns:
@@ -31,12 +31,12 @@ data_processing:
 # See cuML and umap-learn docs for details
 # ------------------
 umap_params_clustering:
-  n_neighbors: 80
+  n_neighbors: 30
   min_dist: 0.1
-  n_components: 4 # Higher dimension for clustering
+  n_components: 3 # Higher dimension for clustering
 
 umap_params_visualization:
-  n_neighbors: 50 # Higher n_neighbors for better global structure
+  n_neighbors: 30 # Higher n_neighbors for better global structure
   min_dist: 0.1 # Higher min_dist for better separation
   n_components: 2 # 2D for plotting
 
@@ -53,6 +53,6 @@ dbscan_params:
 # ------------------
 plot_settings:
   # The percentile of data to include in the initial view of the plot.
-  percentile: 99
+  percentile: 90 # Reduce to exclude more outliers
   # The percentage of margin to add around the core data view.
-  margin_percent: 10
+  margin_percent: 30 # Increase to include more outside points
