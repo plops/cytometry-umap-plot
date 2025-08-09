@@ -30,7 +30,20 @@ data_processing:
 # UMAP Algorithm Parameters
 # See cuML and umap-learn docs for details
 # ------------------
-umap_params:
+umap_params_clustering:
+  n_neighbors: 15
+  min_dist: 0.1
+  n_components: 4 # Higher dimension for clustering
+
+umap_params_visualization:
   n_neighbors: 100
   min_dist: 0.1
-  n_components: 2
+  n_components: 2 # 2D for plotting
+
+# ------------------
+# DBSCAN Clustering Parameters
+# See cuML docs for details
+# ------------------
+dbscan_params:
+  eps: 0.3
+  min_samples: 50

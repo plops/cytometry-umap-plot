@@ -59,12 +59,26 @@ def main_pipeline():
         logger.info(f"Using {len(marker_columns)} columns for UMAP analysis")
         logger.debug(f"Marker columns: {marker_columns}")
 
-        # 5. Run UMAP
-        embedding = analysis.run_gpu_umap(umap_data, cfg.umap_params, joblib_memory)
+        # 5. Run UMAP for Clustering (higher-dimensional)
+        clustering_embedding = analysis.run_gpu_umap(
+            umap_data, cfg.umap_params_clustering, joblib_memory
+        )
 
-        # 6. Generate and Save Plot
+        # 6. Run DBSCAN for cluster analysis
+        cluster_labels = analysis.run_gpu_dbscan(
+            clustering_embedding, cfg.dbscan_params, joblib_memory
+        )
+
+        # 7. Run UMAP for Visualization (2D)
+        visualization_embedding = analysis.run_gpu_umap(
+            umap_data, cfg.umap_params_visualization, joblib_memory
+        )
+
+        # 8. Generate and Save Plot
         output_plot_path = Path(cfg.paths.output_dir) / cfg.paths.plot_filename
-        plotting.generate_interactive_plot(embedding, data_df, output_plot_path)
+        plotting.generate_interactive_plot(
+            visualization_embedding, data_df, cluster_labels, output_plot_path
+        )
 
         logger.info(
             f"Pipeline completed successfully. Output saved to {output_plot_path}"
