@@ -35,7 +35,7 @@ def generate_interactive_plot(
     p = umap.plot.interactive(
         dummy_mapper,
         labels=labels,
-        hover_data=hover_data,
+        #hover_data=hover_data,
         point_size=2
     )
 
