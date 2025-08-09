@@ -86,6 +86,11 @@ issues, clearing the cache/ directory will force a fresh computation.
 
 ## Interpretation of the example dataset:
 
+The dataset contains the following columns: 'FSC-A', 'FSC-H', 'FSC-W',
+'SSC-A', 'SSC-H', 'SSC-W', 'BV421-A', 'BV510-A', 'BV605-A', 'BV650-A',
+'CD4', 'BB515-A', 'CD8', 'PE-CF594-A', 'Live/Dead', 'CD3',
+'APC-R700-A', 'CD45'.
+
 Note: This section was written by Google Gemini 2.5 Pro. I have no
 idea about cytometry experiments.
 
