@@ -3,6 +3,7 @@ import readfcs
 from pathlib import Path
 from logger import logger
 from typing import Optional
+import time
 
 
 def load_fcs_data(
@@ -38,7 +39,7 @@ def load_fcs_data(
                     logger.debug(
                         f"Sampling {max_events} events from {fcs_file.name} (original size: {len(df)})"
                     )
-                    df = df.sample(n=max_events, random_state=42)
+                    df = df.sample(n=max_events, random_state=int(time.time()))
                 else:
                     logger.debug(
                         f"Using all {len(df)} events from {fcs_file.name} (no sampling applied)"

@@ -68,8 +68,9 @@ def main_pipeline():
         logger.debug(f"Marker columns: {marker_columns}")
 
         # 6. Run UMAP for Clustering (higher-dimensional)
+        umap_train_size = getattr(cfg.data_processing, "umap_train_size", -1)
         clustering_embedding = analysis.run_gpu_umap(
-            umap_data, cfg.umap_params_clustering, joblib_memory
+            umap_data, cfg.umap_params_clustering, joblib_memory, umap_train_size
         )
 
         # 7. Run DBSCAN for cluster analysis
@@ -79,7 +80,7 @@ def main_pipeline():
 
         # 8. Run UMAP for Visualization (2D)
         visualization_embedding = analysis.run_gpu_umap(
-            umap_data, cfg.umap_params_visualization, joblib_memory
+            umap_data, cfg.umap_params_visualization, joblib_memory, umap_train_size
         )
 
         # 9. Generate and Save Plot
