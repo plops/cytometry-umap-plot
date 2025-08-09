@@ -49,7 +49,6 @@ def run_gpu_dbscan(embedding: cp.ndarray, dbscan_params, memory) -> cp.ndarray:
         num_clusters = len(cp.unique(labels))
         logger.debug(f"Number of clusters found: {num_clusters}")
 
-
         # Convert result back to a CPU-based NumPy array
         return cp.asnumpy(labels)
 

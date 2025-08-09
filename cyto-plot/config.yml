@@ -47,3 +47,12 @@ umap_params_visualization:
 dbscan_params:
   eps: 0.4 # Neighborhood of a point, Higher eps for larger clusters
   min_samples: 100 # Higher min_samples for more robust clusters
+
+# ------------------
+# Plotting Settings
+# ------------------
+plot_settings:
+  # The percentile of data to include in the initial view of the plot.
+  percentile: 99
+  # The percentage of margin to add around the core data view.
+  margin_percent: 10

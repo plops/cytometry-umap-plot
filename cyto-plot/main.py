@@ -77,7 +77,12 @@ def main_pipeline():
         # 8. Generate and Save Plot
         output_plot_path = Path(cfg.paths.output_dir) / cfg.paths.plot_filename
         plotting.generate_interactive_plot(
-            visualization_embedding, data_df, cluster_labels, output_plot_path
+            visualization_embedding,
+            data_df,
+            cluster_labels,
+            output_plot_path,
+            percentile=cfg.plot_settings.percentile,
+            margin_percent=cfg.plot_settings.margin_percent,
         )
 
         logger.info(

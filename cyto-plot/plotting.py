@@ -9,10 +9,12 @@ from itertools import cycle
 
 
 def generate_interactive_plot(
-        embedding: np.ndarray,
-        source_df: pd.DataFrame,
-        cluster_labels: np.ndarray,
-        output_path: Path,
+    embedding: np.ndarray,
+    source_df: pd.DataFrame,
+    cluster_labels: np.ndarray,
+    output_path: Path,
+    percentile: int = 99,
+    margin_percent: int = 10,
 ):
     """
     Generates an interactive Bokeh plot from the UMAP embedding and saves it to HTML.
@@ -72,6 +74,21 @@ def generate_interactive_plot(
         x_axis_label="UMAP Dimension 1",
         y_axis_label="UMAP Dimension 2",
     )
+
+    # Calculate plot extends to show the specified percentile of points plus a margin
+    lower_quantile = (100 - percentile) / 2 / 100
+    upper_quantile = (percentile + (100 - percentile) / 2) / 100
+
+    x_range_core = plot_df["x"].quantile([lower_quantile, upper_quantile])
+    y_range_core = plot_df["y"].quantile([lower_quantile, upper_quantile])
+
+    x_margin = (x_range_core.iloc[1] - x_range_core.iloc[0]) * (margin_percent / 100)
+    y_margin = (y_range_core.iloc[1] - y_range_core.iloc[0]) * (margin_percent / 100)
+
+    p.x_range.start = x_range_core.iloc[0] - x_margin
+    p.x_range.end = x_range_core.iloc[1] + x_margin
+    p.y_range.start = y_range_core.iloc[0] - y_margin
+    p.y_range.end = y_range_core.iloc[1] + y_margin
 
     # Set plot dimensions to fill the available space
     p.sizing_mode = "stretch_both"
