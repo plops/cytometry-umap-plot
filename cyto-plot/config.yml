@@ -19,7 +19,7 @@ logging:
 # ------------------
 data_processing:
   # Max events to load per file. Set to -1 to load all events.
-  max_events_per_file: 6_000
+  max_events_per_file: 6_000 # For more than 6000 points the UMAP is always noisy
   # Columns to exclude from UMAP analysis.
   # 'filename' is added during loading for labeling purposes.
   exclude_columns:
@@ -31,13 +31,13 @@ data_processing:
 # See cuML and umap-learn docs for details
 # ------------------
 umap_params_clustering:
-  n_neighbors: 15
+  n_neighbors: 80
   min_dist: 0.1
   n_components: 4 # Higher dimension for clustering
 
 umap_params_visualization:
-  n_neighbors: 100
-  min_dist: 0.1
+  n_neighbors: 50 # Higher n_neighbors for better global structure
+  min_dist: 0.1 # Higher min_dist for better separation
   n_components: 2 # 2D for plotting
 
 # ------------------
@@ -45,5 +45,5 @@ umap_params_visualization:
 # See cuML docs for details
 # ------------------
 dbscan_params:
-  eps: 0.3
-  min_samples: 50
+  eps: 0.4 # Neighborhood of a point, Higher eps for larger clusters
+  min_samples: 100 # Higher min_samples for more robust clusters

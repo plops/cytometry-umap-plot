@@ -9,14 +9,14 @@ from itertools import cycle
 
 
 def generate_interactive_plot(
-    embedding: np.ndarray,
-    source_df: pd.DataFrame,
-    cluster_labels: np.ndarray,
-    output_path: Path,
+        embedding: np.ndarray,
+        source_df: pd.DataFrame,
+        cluster_labels: np.ndarray,
+        output_path: Path,
 ):
     """
     Generates an interactive Bokeh plot from the UMAP embedding and saves it to HTML.
-    Colors points based on cluster labels.
+    Colors points based on cluster labels and includes cluster sizes in the legend.
     """
     logger.info(f"Generating interactive plot and saving to {output_path}...")
 
@@ -27,6 +27,19 @@ def generate_interactive_plot(
         str
     )  # Convert labels to string for categorical mapping
 
+    # Sort clusters by size (number of points) in descending order
+    cluster_counts = plot_df["cluster"].value_counts()
+    unique_clusters = cluster_counts.index.tolist()
+    logger.info(
+        f"Found {len(unique_clusters)} unique clusters. The largest is cluster '{unique_clusters[0]}' with {cluster_counts.iloc[0]} points."
+    )
+
+    # Create legend labels with cluster sizes
+    legend_labels_map = {
+        label: f"{label} ({count})" for label, count in cluster_counts.items()
+    }
+    plot_df["legend_label"] = plot_df["cluster"].map(legend_labels_map)
+
     source = ColumnDataSource(plot_df)
 
     # Define the hover tool
@@ -36,13 +49,6 @@ def generate_interactive_plot(
             ("Cluster", "@cluster"),
             ("(x,y)", "($x, $y)"),
         ]
-    )
-
-    # Sort clusters by size (number of points) in descending order to assign distinct colors to largest clusters
-    cluster_counts = plot_df["cluster"].value_counts()
-    unique_clusters = cluster_counts.index.tolist()
-    logger.info(
-        f"Found {len(unique_clusters)} unique clusters. The largest is cluster '{unique_clusters[0]}' with {cluster_counts.iloc[0]} points."
     )
 
     # Create a color palette, cycling if more clusters than available colors
@@ -77,16 +83,16 @@ def generate_interactive_plot(
         source=source,
         fill_color={"field": "cluster", "transform": color_mapper},
         line_color=None,
-        legend_field="cluster",
-        alpha=0.7,
-        size=5,
+        legend_field="legend_label",
+        alpha=0.4,
+        size=2,
     )
 
     # Add a color bar
     color_bar = ColorBar(color_mapper=color_mapper, label_standoff=12)
     p.add_layout(color_bar, "right")
 
-    p.legend.title = "Cluster"
+    p.legend.title = "Cluster (size)"
     p.legend.location = "top_left"
     p.legend.click_policy = "hide"
 
