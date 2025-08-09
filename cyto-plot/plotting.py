@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from bokeh.plotting import figure, save, output_file
-from bokeh.models import HoverTool, ColumnDataSource, CategoricalColorMapper, ColorBar
+from bokeh.models import HoverTool, ColumnDataSource, CategoricalColorMapper
 from bokeh.palettes import Category20_20
 from pathlib import Path
 from logger import logger
@@ -104,10 +104,6 @@ def generate_interactive_plot(
         alpha=0.4,
         size=2,
     )
-
-    # Add a color bar
-    color_bar = ColorBar(color_mapper=color_mapper, label_standoff=12)
-    p.add_layout(color_bar, "right")
 
     p.legend.title = "Cluster (size)"
     p.legend.location = "top_left"

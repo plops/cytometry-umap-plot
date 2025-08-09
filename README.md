@@ -1,4 +1,9 @@
-This project visualizes high-dimensional cytometry data using UMAP (Uniform Manifold Approximation and Projection), generating interactive plots with Bokeh. The pipeline is optimized for performance by leveraging NVIDIA's cuML for GPU-accelerated UMAP computation and Joblib for caching intermediate results, which avoids re-running computationally expensive steps.
+This project visualizes high-dimensional cytometry data using UMAP
+(Uniform Manifold Approximation and Projection), generating
+interactive plots with Bokeh. The pipeline is optimized for
+performance by leveraging NVIDIA's cuML for GPU-accelerated UMAP
+computation and Joblib for caching intermediate results, which avoids
+re-running computationally expensive steps.
 
 ![Screenshot of the interactive UMAP plot](https://raw.githubusercontent.com/plops/cytometry-umap-plot/main/img/plot.png)
 
@@ -37,17 +42,24 @@ This project visualizes high-dimensional cytometry data using UMAP (Uniform Mani
     cd cytometry-umap-plot
     ```
 
-2. Download a dataset and modify paths.fcs_data_datadir to point to the directory containing the *.fcs files. 
+2. Download a dataset and modify paths.fcs_data_datadir to point to
+the directory containing the *.fcs files.
 
 #### Dataset
 
-The example data used in this project is from the FlowRepository, specifically dataset `FR-FCM-Z6UG`. You can obtain the data from this [FlowRepository](http://flowrepository.org/id/FR-FCM-Z6UG) page using the link `Download FCS Files`.
+The example data used in this project is from the FlowRepository,
+specifically dataset `FR-FCM-Z6UG`. You can obtain the data from this
+[FlowRepository](http://flowrepository.org/id/FR-FCM-Z6UG) page using
+the link `Download FCS Files`.
 
-Place your `.fcs` files in the data directory specified in `config.yml` (e.g., `data/`).
+Place your `.fcs` files in the data directory specified in
+`config.yml` (e.g., `data/`).
 
 ### Configuration
 
-Project settings, such as file paths, UMAP parameters, and plotting options, are managed in the `config.yml` file. This allows for easy experimentation without modifying the source code.
+Project settings, such as file paths, UMAP parameters, and plotting
+options, are managed in the `config.yml` file. This allows for easy
+experimentation without modifying the source code.
 
 ### Usage
 
@@ -58,13 +70,15 @@ cd cyto-plot
 uv run main.py
 ```
 
-On its first run the script will download the dependencies (7.2GB) into the folder cyto-plot/.venv. 
+On its first run the script will download the dependencies (7.2GB)
+into the folder cyto-plot/.venv.
 
-The script will process the `.fcs` files, perform UMAP dimensionality reduction, and save an interactive HTML plot in the specified output directory.
+The script will process the `.fcs` files, perform UMAP dimensionality
+reduction, and save an interactive HTML plot in the specified output
+directory.
 
 The first run with a new dataset or after you have modified the
 `config.yml` file will be slower as it populates the cache. Subsequent
 runs will be significantly faster, loading the pre-computed data and
-UMAP embedding directly from the `cache/` directory. This isn't very
-well tested, try to delete the cache directory if you see any
-issues. This will force recomputation.
+UMAP embedding directly from the `cache/` directory. If you encounter
+issues, clearing the cache/ directory will force a fresh computation.
