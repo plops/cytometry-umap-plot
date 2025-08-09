@@ -1,4 +1,16 @@
-I want to experiment cytometry data and UMAP.
+This project is an attempt to visualize cytometry data using UMAP and
+Bokeh for interactive plotting. The project is structured to allow for
+efficient computation and caching of intermediate results, leveraging
+GPU acceleration with Nvidia cuML.
+
+The following acted as a prompt for the AI (Gemini 2.5 Pro) to generate the code.
+It only generated the initial draft, though.
+
+Here is a plot that was generated with the cyto_plot program:
+
+
+
+I want to experiment cytometry data and UMAP
 
 I downloaded a dataset from http://flowrepository.org/id/FR-FCM-Z6UG
 

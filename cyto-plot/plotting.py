@@ -30,6 +30,9 @@ def generate_interactive_plot(
         y_axis_label="UMAP Dimension 2",
     )
 
+    # Set plot dimensions to fill the available space
+    p.sizing_mode = "stretch_both"
+
     # Add a scatter renderer with data from the source
     p.scatter("x", "y", source=source, legend_label="Data Points", alpha=0.6, size=5)
 

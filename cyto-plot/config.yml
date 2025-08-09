@@ -19,7 +19,7 @@ logging:
 # ------------------
 data_processing:
   # Max events to load per file. Set to -1 to load all events.
-  max_events_per_file: 1000
+  max_events_per_file: 6_000
   # Columns to exclude from UMAP analysis.
   # 'filename' is added during loading for labeling purposes.
   exclude_columns:
@@ -31,6 +31,6 @@ data_processing:
 # See cuML and umap-learn docs for details
 # ------------------
 umap_params:
-  n_neighbors: 30
-  min_dist: 0.7
+  n_neighbors: 100
+  min_dist: 0.1
   n_components: 2
