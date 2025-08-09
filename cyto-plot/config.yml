@@ -2,7 +2,7 @@
 # Project Paths
 # ------------------
 paths:
-  fcs_data_dir: "data/fcs/"
+  fcs_data_dir: "../data/fcs/"
   cache_dir: "cache/"
   output_dir: "output/"
   plot_filename: "interactive_umap_plot.html"

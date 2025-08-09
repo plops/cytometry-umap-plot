@@ -2,10 +2,10 @@ import sys
 from pathlib import Path
 from joblib import Memory
 
-# Add the src directory to the Python path to allow imports
-sys.path.append(str(Path(__file__).resolve().parent / "src"))
+# Add the current directory to the Python path to allow imports
+sys.path.append(str(Path(__file__).resolve().parent ))
 
-from cyto_plot import config, data_loader, analysis, plotting
+import config, data_loader, analysis, plotting
 
 def main_pipeline():
     """
