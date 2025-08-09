@@ -46,7 +46,7 @@ This project visualizes high-dimensional cytometry data using UMAP (Uniform Mani
 
 #### Dataset
 
-The example data used in this project is from the FlowRepository, specifically dataset `FR-FCM-Z6UG`. You can obtain the data from this (link)[http://flowrepository.org/id/FR-FCM-Z6UG]
+The example data used in this project is from the FlowRepository, specifically dataset `FR-FCM-Z6UG`. You can obtain the data from this [FlowRepository](http://flowrepository.org/id/FR-FCM-Z6UG).
 
 Place your `.fcs` files in the data directory specified in `config.yml` (e.g., `data/`).
 
