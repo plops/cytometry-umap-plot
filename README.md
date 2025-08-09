@@ -8,6 +8,7 @@ It only generated the initial draft, though.
 
 Here is a plot that was generated with the cyto_plot program:
 
+![Screenshot of the interactive UMAP plot](https://raw.githubusercontent.com/plops/cytometry-umap-plot/main/img/plot.png)
 
 
 I want to experiment cytometry data and UMAP
