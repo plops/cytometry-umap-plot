@@ -1,8 +1,6 @@
-Dataset from
+I want to experiment cytometry data and UMAP.
 
-http://flowrepository.org/id/FR-FCM-Z6UG
-
-Validate the Leishmania donovani LST leishmanin antigen in immune animals.
+I downloaded a dataset from http://flowrepository.org/id/FR-FCM-Z6UG
 
 ```
 4.6M Oct  9  2023  Spleenocytes_Tcells_Vaccinated_GK15__3_009.fcs
@@ -14,3 +12,14 @@ Validate the Leishmania donovani LST leishmanin antigen in immune animals.
 3.7M Oct  9  2023  Spleenocytes_Tcells_Unstained_control_001.fcs
 4.5M Oct  9  2023  Spleenocytes_Tcells_Vaccinated_aCD8_003.fcs
 ```
+
+The topic of the research is stated as:
+Validate the Leishmania donovani LST leishmanin antigen in immune animals.
+
+Give me instructions on how to start new python project with uv.
+What dependencies are required to load the files?
+Use Nvidia cuml for UMAP on an NVidia GPU.
+
+Intermediate results shall be stored in cache files between runs, so that I can run the script multiple times and I don't have to wait for compute intensive steps.
+
+Eventually I want to use umap.plot.interactive to plot a bokeh plot (in HTML format).
