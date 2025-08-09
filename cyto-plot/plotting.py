@@ -3,6 +3,7 @@ import numpy as np
 import umap.plot
 from bokeh.plotting import save, output_file
 from pathlib import Path
+from logger import logger
 
 def generate_interactive_plot(
         embedding: np.ndarray,
@@ -12,7 +13,7 @@ def generate_interactive_plot(
     """
     Generates an interactive Bokeh plot from the UMAP embedding and saves it to HTML.
     """
-    print(f"Generating interactive plot and saving to {output_path}...")
+    logger.info(f"Generating interactive plot and saving to {output_path}...")
 
     # umap.plot.interactive requires a UMAP object. We can create a dummy object
     # that just holds our pre-computed embedding.
@@ -30,6 +31,7 @@ def generate_interactive_plot(
         'File': labels
     })
 
+    logger.debug(f"Creating interactive plot with {len(embedding)} points")
     p = umap.plot.interactive(
         dummy_mapper,
         labels=labels,
@@ -39,3 +41,4 @@ def generate_interactive_plot(
 
     output_file(output_path, title="Interactive UMAP of Cytometry Data")
     save(p)
+    logger.info(f"Interactive plot saved successfully to {output_path}")

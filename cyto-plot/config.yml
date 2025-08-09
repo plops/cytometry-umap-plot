@@ -8,6 +8,13 @@ paths:
   plot_filename: "interactive_umap_plot.html"
 
 # ------------------
+# Logging Configuration
+# ------------------
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  log_file: "cyto-plot.log"
+
+# ------------------
 # Data Processing Settings
 # ------------------
 data_processing:
