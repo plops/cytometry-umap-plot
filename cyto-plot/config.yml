@@ -1,0 +1,27 @@
+# ------------------
+# Project Paths
+# ------------------
+paths:
+  fcs_data_dir: "data/fcs/"
+  cache_dir: "cache/"
+  output_dir: "output/"
+  plot_filename: "interactive_umap_plot.html"
+
+# ------------------
+# Data Processing Settings
+# ------------------
+data_processing:
+  # Columns to exclude from UMAP analysis.
+  # 'filename' is added during loading for labeling purposes.
+  exclude_columns:
+    - "Time"
+    - "filename"
+
+# ------------------
+# UMAP Algorithm Parameters
+# See cuML and umap-learn docs for details
+# ------------------
+umap_params:
+  n_neighbors: 15
+  min_dist: 0.1
+  n_components: 2c

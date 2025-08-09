@@ -24,6 +24,8 @@ Intermediate results shall be stored in cache files between runs, so that I can 
 
 Eventually I want to use umap.plot.interactive to plot a bokeh plot (in HTML format).
 
+Make sure configuration options are stored in a good way and the architecture follows industry standard.
+
 This initializes the project and adds the dependencies:
 
 ```
