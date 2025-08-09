@@ -65,7 +65,8 @@ def run_gpu_dbscan(embedding: cp.ndarray, dbscan_params, memory) -> cp.ndarray:
         # Data is already a CuPy array from UMAP
         cuml_dbscan = DBSCAN(**params)
         logger.info("Starting DBSCAN computation...")
-        labels = cuml_dbscan.fit_predict(data_to_cluster)
+        cuml_dbscan.fit(data_to_cluster,convert_dtype=False)
+        labels = cuml_dbscan.labels_
         logger.info("DBSCAN computation completed.")
 
         num_clusters = len(cp.unique(labels))

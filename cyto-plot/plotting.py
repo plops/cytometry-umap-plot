@@ -13,6 +13,8 @@ def generate_interactive_plot(
     source_df: pd.DataFrame,
     cluster_labels: np.ndarray,
     output_path: Path,
+    point_alpha: float = 0.6,
+    point_size: int = 2,
     percentile: int = 99,
     margin_percent: int = 10,
 ):
@@ -49,7 +51,7 @@ def generate_interactive_plot(
         tooltips=[
             ("File", "@label"),
             ("Cluster", "@cluster"),
-            ("(x,y)", "($x, $y)"),
+          #  ("(x,y)", "($x, $y)"),
         ]
     )
 
@@ -101,8 +103,8 @@ def generate_interactive_plot(
         fill_color={"field": "cluster", "transform": color_mapper},
         line_color=None,
         legend_field="legend_label",
-        alpha=0.4,
-        size=2,
+        alpha=point_alpha,
+        size=point_size,
     )
 
     p.legend.title = "Cluster (size)"
