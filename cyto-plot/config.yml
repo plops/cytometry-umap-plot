@@ -30,7 +30,7 @@ data_processing:
 # ------------------
 umap_params:
   #init: "random"
-  n_neighbors: 15
+  n_neighbors: 10
   min_dist: 0.1
   n_components: 2
   #n_epochs: 500

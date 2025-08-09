@@ -10,7 +10,7 @@ import data_loader
 import analysis
 import plotting
 from logger import setup_logger
-
+import logging
 
 def main_pipeline():
     """
@@ -18,7 +18,7 @@ def main_pipeline():
     """
     # Setup logging early
     log_file = Path("output") / "cyto-plot.log"
-    logger = setup_logger("cyto-plot", log_file=log_file)
+    logger = setup_logger("cyto-plot", log_file=log_file, level=logging.DEBUG)
 
     logger.info("Starting Cytometry Analysis Pipeline")
 
