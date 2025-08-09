@@ -39,11 +39,6 @@ This project visualizes high-dimensional cytometry data using UMAP (Uniform Mani
 
 2. Download a dataset and modify paths.fcs_data_datadir to point to the directory containing the *.fcs files. 
 
-3.  Create a virtual environment and install the required dependencies using `uv`:
-    ```bash
-    
-    ```
-
 #### Dataset
 
 The example data used in this project is from the FlowRepository, specifically dataset `FR-FCM-Z6UG`. You can obtain the data from this [FlowRepository](http://flowrepository.org/id/FR-FCM-Z6UG) page using the link `Download FCS Files`.
@@ -59,6 +54,7 @@ Project settings, such as file paths, UMAP parameters, and plotting options, are
 To generate the UMAP visualization, run the main script:
 
 ```bash
+cd cyto-plot
 uv run main.py
 ```
 
