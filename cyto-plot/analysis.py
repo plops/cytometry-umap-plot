@@ -2,12 +2,13 @@ import pandas as pd
 import cupy as cp
 from cuml import UMAP
 from logger import logger
-import pickle
+
 
 def run_gpu_umap(data: pd.DataFrame, umap_params, memory) -> cp.ndarray:
     """
     Performs UMAP on the GPU using cuml and caches the result.
     """
+
     @memory.cache
     def _cached_umap(data_to_embed, **params):
         logger.info("Performing UMAP on GPU with cuML...")
@@ -21,14 +22,8 @@ def run_gpu_umap(data: pd.DataFrame, umap_params, memory) -> cp.ndarray:
         embedding = cuml_umap.fit_transform(gpu_data)
         logger.info(f"UMAP computation completed. Embedding shape: {embedding.shape}")
 
-        # Pickle the UMAP model (the memory cache of embedding array is insufficient for plotting)
-        # with open('reducer.pkl', 'wb') as f:
-        #     pickle.dump(cuml_umap, f)
-        #     logger.info("UMAP model saved to reducer.pkl")
-
         # Convert result back to a CPU-based NumPy array for plotting and storage
-        # return cp.asnumpy(embedding)
-        return cuml_umap
+        return cp.asnumpy(embedding)
 
     # Call the cached function with parameters from the config
     return _cached_umap(data, **vars(umap_params))

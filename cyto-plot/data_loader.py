@@ -1,18 +1,19 @@
-import os
 import pandas as pd
 import readfcs
 from pathlib import Path
 from logger import logger
 
+
 def load_fcs_data(data_dir: str, memory) -> pd.DataFrame:
     """
     Loads all .fcs files from a directory, combines them, and caches the result.
     """
+
     # The actual function to be cached by joblib
     @memory.cache
     def _cached_load(directory):
         logger.info(f"Loading .fcs files from '{directory}'...")
-        fcs_files = list(Path(directory).glob('*.fcs'))
+        fcs_files = list(Path(directory).glob("*.fcs"))
         if not fcs_files:
             logger.error(f"No .fcs files found in directory: {directory}")
             raise ValueError(f"No .fcs files found in directory: {directory}")
@@ -25,9 +26,11 @@ def load_fcs_data(data_dir: str, memory) -> pd.DataFrame:
                 adata = readfcs.read(str(fcs_file))
                 df = adata.to_df()
                 # Add filename for labeling and tracking origin
-                df['filename'] = fcs_file.name
+                df["filename"] = fcs_file.name
                 all_data.append(df)
-                logger.debug(f"Successfully loaded {len(df)} events from {fcs_file.name}")
+                logger.debug(
+                    f"Successfully loaded {len(df)} events from {fcs_file.name}"
+                )
             except Exception as e:
                 logger.warning(f"Could not read {fcs_file.name}: {e}")
 
@@ -37,7 +40,9 @@ def load_fcs_data(data_dir: str, memory) -> pd.DataFrame:
 
         logger.info("Combining loaded files into a single DataFrame...")
         combined_df = pd.concat(all_data, ignore_index=True)
-        logger.info(f"Successfully combined {len(combined_df)} total events from {len(all_data)} files")
+        logger.info(
+            f"Successfully combined {len(combined_df)} total events from {len(all_data)} files"
+        )
         return combined_df
 
     # Call the cached function

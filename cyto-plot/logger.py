@@ -4,7 +4,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
-def setup_logger(name: str = "cyto-plot", log_file: Optional[Path] = None, level: int = logging.INFO) -> logging.Logger:
+
+def setup_logger(
+    name: str = "cyto-plot", log_file: Optional[Path] = None, level: int = logging.INFO
+) -> logging.Logger:
     """
     Set up a logger with console and optional file handlers.
 
@@ -22,10 +25,12 @@ def setup_logger(name: str = "cyto-plot", log_file: Optional[Path] = None, level
     logger.propagate = False
 
     formatter = logging.Formatter(
-        fmt='%(asctime)s UTC | %(levelname)s | %(name)s | %(message)s',
-        datefmt='%Y-%m-%dT%H:%M:%S'
+        fmt="%(asctime)s UTC | %(levelname)s | %(name)s | %(message)s",
+        datefmt="%Y-%m-%dT%H:%M:%S",
     )
-    formatter.converter = lambda timestamp: datetime.fromtimestamp(timestamp, tz=timezone.utc).timetuple()
+    formatter.converter = lambda timestamp: datetime.fromtimestamp(
+        timestamp, tz=timezone.utc
+    ).timetuple()
 
     # Console handler
     console_handler = logging.StreamHandler(sys.stdout)
@@ -40,6 +45,7 @@ def setup_logger(name: str = "cyto-plot", log_file: Optional[Path] = None, level
         logger.addHandler(file_handler)
 
     return logger
+
 
 # Global logger instance
 logger = setup_logger()

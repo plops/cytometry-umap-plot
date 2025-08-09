@@ -3,10 +3,14 @@ from pathlib import Path
 from joblib import Memory
 
 # Add the current directory to the Python path to allow imports
-sys.path.append(str(Path(__file__).resolve().parent ))
+sys.path.append(str(Path(__file__).resolve().parent))
 
-import config, data_loader, analysis, plotting
+import config
+import data_loader
+import analysis
+import plotting
 from logger import setup_logger
+
 
 def main_pipeline():
     """
@@ -32,25 +36,33 @@ def main_pipeline():
         # The function call is wrapped in a decorator, so caching is automatic. [3]
         try:
             data_df = data_loader.load_fcs_data(cfg.paths.fcs_data_dir, joblib_memory)
-            logger.info(f"Successfully loaded {len(data_df)} events from {data_df['filename'].nunique()} files")
+            logger.info(
+                f"Successfully loaded {len(data_df)} events from {data_df['filename'].nunique()} files"
+            )
         except (ValueError, FileNotFoundError) as e:
             logger.error(f"Data loading failed: {e}")
             return
 
         # 4. Prepare Data for UMAP
-        marker_columns = [col for col in data_df.columns if col not in cfg.data_processing.exclude_columns]
+        marker_columns = [
+            col
+            for col in data_df.columns
+            if col not in cfg.data_processing.exclude_columns
+        ]
         umap_data = data_df[marker_columns]
         logger.info(f"Using {len(marker_columns)} columns for UMAP analysis")
         logger.debug(f"Marker columns: {marker_columns}")
 
         # 5. Run UMAP
-        cuml_umap = analysis.run_gpu_umap(umap_data, cfg.umap_params, joblib_memory)
+        embedding = analysis.run_gpu_umap(umap_data, cfg.umap_params, joblib_memory)
 
         # 6. Generate and Save Plot
         output_plot_path = Path(cfg.paths.output_dir) / cfg.paths.plot_filename
-        plotting.generate_interactive_plot(cuml_umap, data_df, output_plot_path)
+        plotting.generate_interactive_plot(embedding, data_df, output_plot_path)
 
-        logger.info(f"Pipeline completed successfully. Output saved to {output_plot_path}")
+        logger.info(
+            f"Pipeline completed successfully. Output saved to {output_plot_path}"
+        )
 
     except Exception as e:
         logger.critical(f"Pipeline failed with unexpected error: {e}", exc_info=True)

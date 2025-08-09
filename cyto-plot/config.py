@@ -3,7 +3,8 @@ from pathlib import Path
 from types import SimpleNamespace
 from logger import logger
 
-def load_config(config_path: str = 'config.yml') -> SimpleNamespace:
+
+def load_config(config_path: str = "config.yml") -> SimpleNamespace:
     """
     Loads a YAML configuration file and returns it as a SimpleNamespace object
     for easy attribute access (e.g., config.paths.data_dir).
@@ -14,10 +15,14 @@ def load_config(config_path: str = 'config.yml') -> SimpleNamespace:
         raise FileNotFoundError(f"Configuration file not found at: {path}")
 
     logger.info(f"Loading configuration from: {path}")
-    with open(path, 'r') as f:
+    with open(path, "r") as f:
         config_dict = yaml.safe_load(f)
 
     # Convert nested dictionaries to SimpleNamespace objects for dot notation access
-    config = SimpleNamespace(**{k: SimpleNamespace(**v) for k, v in config_dict.items()})
-    logger.debug(f"Configuration loaded successfully with sections: {list(config_dict.keys())}")
+    config = SimpleNamespace(
+        **{k: SimpleNamespace(**v) for k, v in config_dict.items()}
+    )
+    logger.debug(
+        f"Configuration loaded successfully with sections: {list(config_dict.keys())}"
+    )
     return config

@@ -1,46 +1,37 @@
 import pandas as pd
 import numpy as np
-import umap.plot
-from bokeh.plotting import save, output_file
+from bokeh.plotting import figure, save, output_file
+from bokeh.models import HoverTool, ColumnDataSource
 from pathlib import Path
 from logger import logger
-import cuml
+
 
 def generate_interactive_plot(
-        cuml_umap: 'cuml.UMAP',
-        #embedding: np.ndarray,
-        source_df: pd.DataFrame,
-        output_path: Path
+    embedding: np.ndarray, source_df: pd.DataFrame, output_path: Path
 ):
     """
     Generates an interactive Bokeh plot from the UMAP embedding and saves it to HTML.
     """
     logger.info(f"Generating interactive plot and saving to {output_path}...")
 
-    # umap.plot.interactive requires a UMAP object. We can create a dummy object
-    # that just holds our pre-computed embedding.
-    class DummyUMAP:
-        def __init__(self, embedding):
-            self.embedding_ = embedding
-
-    dummy_mapper = DummyUMAP(cuml_umap.embedding_)
-
-    # Use the 'filename' column for coloring points and for hover information
-    labels = source_df['filename']
-    # hover_data = pd.DataFrame({
-    #     'x': embedding[:, 0],
-    #     'y': embedding[:, 1],
-    #     'File': labels
-    # })
-
-    # logger.debug(f"Creating interactive plot with {len(cuml_umap.embedding_)} points")
-    p = umap.plot.interactive(
-        # cuml_umap.,
-        dummy_mapper,
-        labels=labels,
-        #hover_data=hover_data,
-        point_size=2
+    # Create a ColumnDataSource for Bokeh
+    source = ColumnDataSource(
+        data=dict(x=embedding[:, 0], y=embedding[:, 1], label=source_df["filename"])
     )
+
+    # Define the hover tool
+    hover = HoverTool(tooltips=[("File", "@label"), ("(x,y)", "($x, $y)")])
+
+    # Create a new plot with tools
+    p = figure(
+        tools=[hover, "pan", "wheel_zoom", "box_zoom", "reset", "save"],
+        title="Interactive UMAP of Cytometry Data",
+        x_axis_label="UMAP Dimension 1",
+        y_axis_label="UMAP Dimension 2",
+    )
+
+    # Add a scatter renderer with data from the source
+    p.scatter("x", "y", source=source, legend_label="Data Points", alpha=0.6, size=5)
 
     output_file(output_path, title="Interactive UMAP of Cytometry Data")
     save(p)

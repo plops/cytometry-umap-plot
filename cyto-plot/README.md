@@ -42,3 +42,12 @@ Download [PyCharm](https://www.jetbrains.com/de-de/pycharm/). Open the project d
 Configure the Python interpreter to use the virtual environment (select 'uv'). 
 
 Open the `main.py` file and run it using the green play button in the top right corner of PyCharm.
+
+
+## How to format and check the code
+
+```
+uv run ruff format
+uv run ruff check
+uv run ruff check --fix
+```
