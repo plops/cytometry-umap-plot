@@ -23,3 +23,13 @@ Use Nvidia cuml for UMAP on an NVidia GPU.
 Intermediate results shall be stored in cache files between runs, so that I can run the script multiple times and I don't have to wait for compute intensive steps.
 
 Eventually I want to use umap.plot.interactive to plot a bokeh plot (in HTML format).
+
+This initializes the project and adds the dependencies:
+
+```
+uv init cyto-plot
+cd cyto-plot
+uv add readfcs ruff "cuml-cu12" "cudf-cu12" "umap-learn[plot]" matplotlib bokeh joblib pandas numpy
+```
+
+The Joblib library provides a simple way to avoid re-running computationally expensive steps this using the Memory class and the @memory.cache decorator
