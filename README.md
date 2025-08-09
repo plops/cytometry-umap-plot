@@ -27,7 +27,7 @@ This project visualizes high-dimensional cytometry data using UMAP (Uniform Mani
 
 *   An NVIDIA GPU with CUDA 12.x installed.
 *   Python 3.x.
-*   `uv` package manager.
+*   `uv` package manager. This can be obtained using `pip install uv`, if you have pip.
 
 #### Installation
 
@@ -62,6 +62,13 @@ To generate the UMAP visualization, run the main script:
 uv run main.py
 ```
 
-On its first run the script will download the dependencies (7.2GB) into the folder cyto-plot/.venv.
+On its first run the script will download the dependencies (7.2GB) into the folder cyto-plot/.venv. 
 
 The script will process the `.fcs` files, perform UMAP dimensionality reduction, and save an interactive HTML plot in the specified output directory.
+
+The first run with a new dataset or after you have modified the
+`config.yml` file will be slower as it populates the cache. Subsequent
+runs will be significantly faster, loading the pre-computed data and
+UMAP embedding directly from the `cache/` directory. This isn't very
+well tested, try to delete the cache directory if you see any
+issues. This will force recomputation.
