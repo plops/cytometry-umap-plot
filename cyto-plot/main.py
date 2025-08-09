@@ -5,7 +5,7 @@ from joblib import Memory
 # Add the src directory to the Python path to allow imports
 sys.path.append(str(Path(__file__).resolve().parent / "src"))
 
-from my_cyto_project import config, data_loader, analysis, plotting
+from cyto_plot import config, data_loader, analysis, plotting
 
 def main_pipeline():
     """
