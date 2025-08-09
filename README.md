@@ -146,3 +146,4 @@ The file names and conditions listed provide further insight:
 Nat Commun. 2023 Nov 2;14:7028. doi: 10.1038/s41467-023-42732-2
 Production of leishmanin skin test antigen from Leishmania donovani for future reintroduction in the field
 
+https://pmc.ncbi.nlm.nih.gov/articles/PMC10622560/
