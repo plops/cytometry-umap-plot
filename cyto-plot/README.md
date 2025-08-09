@@ -36,6 +36,14 @@ The first run will be slower as it populates the cache. Subsequent runs will be 
 The final `interactive_umap_plot.html` will be saved in your `output/` directory.
 
 
+## How to clean the cache
+
+Intermediate files are stored in the `cache/joblib` directory. You can clear this cache to force a full re-computation:
+
+```
+rm -r cache/joblib
+```
+
 ## How to run in an editor
 
 Download [PyCharm](https://www.jetbrains.com/de-de/pycharm/). Open the project directory in PyCharm.
