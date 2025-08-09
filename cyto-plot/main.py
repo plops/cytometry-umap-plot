@@ -12,6 +12,7 @@ import plotting
 from logger import setup_logger
 import logging
 
+
 def main_pipeline():
     """
     Orchestrates the full data analysis pipeline.
@@ -33,9 +34,14 @@ def main_pipeline():
         joblib_memory = Memory(cfg.paths.cache_dir, verbose=0)
 
         # 3. Load Data
-        # The function call is wrapped in a decorator, so caching is automatic. [3]
         try:
-            data_df = data_loader.load_fcs_data(cfg.paths.fcs_data_dir, joblib_memory)
+            max_events = getattr(cfg.data_processing, "max_events_per_file", -1)
+            if max_events == -1:
+                max_events = None  # Use None to signify loading all events
+
+            data_df = data_loader.load_fcs_data(
+                cfg.paths.fcs_data_dir, joblib_memory, max_events_per_file=max_events
+            )
             logger.info(
                 f"Successfully loaded {len(data_df)} events from {data_df['filename'].nunique()} files"
             )
