@@ -1,50 +1,67 @@
-This project is an attempt to visualize cytometry data using UMAP and
-Bokeh for interactive plotting. The project is structured to allow for
-efficient computation and caching of intermediate results, leveraging
-GPU acceleration with Nvidia cuML.
-
-The following acted as a prompt for the AI (Gemini 2.5 Pro) to generate the code.
-It only generated the initial draft, though.
-
-Here is a plot that was generated with the cyto_plot program:
+This project visualizes high-dimensional cytometry data using UMAP (Uniform Manifold Approximation and Projection), generating interactive plots with Bokeh. The pipeline is optimized for performance by leveraging NVIDIA's cuML for GPU-accelerated UMAP computation and Joblib for caching intermediate results, which avoids re-running computationally expensive steps.
 
 ![Screenshot of the interactive UMAP plot](https://raw.githubusercontent.com/plops/cytometry-umap-plot/main/img/plot.png)
 
+### Features
 
-I want to experiment cytometry data and UMAP
+*   High-dimensional data visualization using UMAP.
+*   Interactive and explorable plots powered by Bokeh.
+*   GPU acceleration for UMAP via NVIDIA cuML for significant speed-up.
+*   Efficient caching of intermediate results with Joblib to avoid re-computation.
+*   Configurable data processing and plotting parameters via a `config.yml` file.
 
-I downloaded a dataset from http://flowrepository.org/id/FR-FCM-Z6UG
+### Technology Stack
 
+*   Python
+*   `uv` for dependency management
+*   NVIDIA RAPIDS (`cuml-cu12`, `cudf-cu12`) for GPU acceleration
+*   `umap-learn` for the UMAP algorithm
+*   `Bokeh` for interactive plotting
+*   `Pandas` for data manipulation
+*   `Joblib` for caching
+*   `readfcs` for reading Flow Cytometry Standard (`.fcs`) files
+
+### Getting Started
+
+#### Prerequisites
+
+*   An NVIDIA GPU with CUDA 12.x installed.
+*   Python 3.x.
+*   `uv` package manager.
+
+#### Installation
+
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/plops/cytometry-umap-plot.git
+    cd cytometry-umap-plot
+    ```
+
+2. Download a dataset and modify paths.fcs_data_datadir to point to the directory containing the *.fcs files. 
+
+3.  Create a virtual environment and install the required dependencies using `uv`:
+    ```bash
+    
+    ```
+
+#### Dataset
+
+The example data used in this project is from the FlowRepository, specifically dataset `FR-FCM-Z6UG`. You can obtain the data from this (link)[http://flowrepository.org/id/FR-FCM-Z6UG]
+
+Place your `.fcs` files in the data directory specified in `config.yml` (e.g., `data/`).
+
+### Configuration
+
+Project settings, such as file paths, UMAP parameters, and plotting options, are managed in the `config.yml` file. This allows for easy experimentation without modifying the source code.
+
+### Usage
+
+To generate the UMAP visualization, run the main script:
+
+```bash
+uv run main.py
 ```
-4.6M Oct  9  2023  Spleenocytes_Tcells_Vaccinated_GK15__3_009.fcs
-4.6M Oct  9  2023  Spleenocytes_Tcells_Vaccinated_GK15__2_007.fcs
-4.8M Oct  9  2023  Spleenocytes_Tcells_Vaccinated_Saline_004.fcs
-4.8M Oct  9  2023  Spleenocytes_Tcells_Vaccinated_GK15_006.fcs
-3.7M Oct  9  2023 'Spleenocytes_Tcells_FMO- no CD4 staining_002.fcs'
-7.0M Oct  9  2023  Spleenocytes_Tcells_Rag2KO_005.fcs
-3.7M Oct  9  2023  Spleenocytes_Tcells_Unstained_control_001.fcs
-4.5M Oct  9  2023  Spleenocytes_Tcells_Vaccinated_aCD8_003.fcs
-```
 
-The topic of the research is stated as:
-Validate the Leishmania donovani LST leishmanin antigen in immune animals.
+On its first run the script will download the dependencies (7.2GB) into the folder cyto-plot/.venv.
 
-Give me instructions on how to start new python project with uv.
-What dependencies are required to load the files?
-Use Nvidia cuml for UMAP on an NVidia GPU.
-
-Intermediate results shall be stored in cache files between runs, so that I can run the script multiple times and I don't have to wait for compute intensive steps.
-
-Eventually I want to use umap.plot.interactive to plot a bokeh plot (in HTML format).
-
-Make sure configuration options are stored in a good way and the architecture follows industry standard.
-
-This initializes the project and adds the dependencies:
-
-```
-uv init cyto-plot
-cd cyto-plot
-uv add readfcs ruff "cuml-cu12" "cudf-cu12" "umap-learn[plot]" matplotlib bokeh joblib pandas numpy
-```
-
-The Joblib library provides a simple way to avoid re-running computationally expensive steps this using the Memory class and the @memory.cache decorator
+The script will process the `.fcs` files, perform UMAP dimensionality reduction, and save an interactive HTML plot in the specified output directory.
