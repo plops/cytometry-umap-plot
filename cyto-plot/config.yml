@@ -24,4 +24,4 @@ data_processing:
 umap_params:
   n_neighbors: 15
   min_dist: 0.1
-  n_components: 2c
+  n_components: 2

@@ -11,7 +11,7 @@ def run_gpu_umap(data: pd.DataFrame, umap_params, memory) -> cp.ndarray:
         print("Performing UMAP on GPU with cuML...")
         # Convert pandas DataFrame to CuPy array for cuML
         gpu_data = cp.asarray(data_to_embed.values)
-
+        print(f"Data shape for UMAP: {gpu_data.shape}")
         print(f"Parameters for UMAP: {params}")
         cuml_umap = UMAP(**params)
         embedding = cuml_umap.fit_transform(gpu_data)
