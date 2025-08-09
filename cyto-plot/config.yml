@@ -19,7 +19,7 @@ logging:
 # ------------------
 data_processing:
   # Max events to load per file. Set to -1 to load all events.
-  max_events_per_file: 7_200 # For more than 6000 points the UMAP is always noisy
+  max_events_per_file: -1 # For more than 6000 points the UMAP is always noisy
   # Number of events to use for UMAP training. -1 to use all events.
   umap_train_size: -1 # 4_000
   # Columns to exclude from UMAP analysis.
@@ -35,13 +35,18 @@ data_processing:
 umap_params_clustering:
   n_neighbors: 30
   min_dist: 0.1
+  build_algo: "brute_force_knn" # "nn_descent" doesn't seem to work
   n_components: 3 # Higher dimension for clustering
 
 umap_params_visualization:
   #init: "random" # Default: 'spectral' uses fuzzy 1-skeleton
-  n_epochs: 10_000 # More epochs for better convergence, Default: None uses 200 for large, 500 for small
+  # learning_rate: 1.0 # Default: 1.0, Higher for faster convergence
+  n_epochs: 400 # More epochs for better convergence, Default: None uses 200 for large, 500 for small
   n_neighbors: 30 # Higher n_neighbors for better global structure
-  min_dist: 0.1 # Higher min_dist for better separation
+  min_dist: 0.1 # Higher min_dist for better separation, should be relative to spread
+  # spread: 1.0 # Higher spread for better separation, should be relative to min_dist
+  verbose: True # Default: False, True for more output
+  build_algo: "brute_force_knn" # "brute_force_knn", Default: "nn_descent" for >= 50k rows
   n_components: 2 # 2D for plotting
 
 # ------------------
