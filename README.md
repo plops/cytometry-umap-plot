@@ -140,3 +140,9 @@ The file names and conditions listed provide further insight:
 *   **Rag2 KO Control:** Rag2 knockout mice lack functional T-cells and B-cells. These mice serve as a perfect negative control, confirming that the signals being detected for CD3, CD4, and CD8 are indeed from these cell types, as they should be absent in these mice.
 *   **Undepleted (Saline):** This group represents the normal immune response in vaccinated mice without any cell depletion, serving as the positive control or baseline for the T-cell response.
 *   **Depleted Samples (GK1.5 for CD4, aCD8 for CD8):** These are the core experimental groups. The data in these FCS files is used to confirm that the respective T-cell populations were successfully removed and to study the impact of their absence on the overall immune response.
+
+## Related Paper
+
+Nat Commun. 2023 Nov 2;14:7028. doi: 10.1038/s41467-023-42732-2
+Production of leishmanin skin test antigen from Leishmania donovani for future reintroduction in the field
+
