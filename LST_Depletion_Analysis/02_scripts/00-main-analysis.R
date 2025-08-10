@@ -214,7 +214,7 @@ print("Generating final CD4 vs CD8 plots for all samples...")
 # Plot CD4 vs CD8 for all experimental samples
 final_plot <- ggcyto(gs, aes(x = "PE-A", y = "BV786-A"), subset = "CD3+") +
   geom_hex(bins = 128) +
-  geom_gate() + # Automatically finds the CD4/CD8 quad gate
+  geom_gate(c("CD4+CD8-", "CD4-CD8-", "CD4-CD8+", "CD4+CD8+")) + # Explicitly add gates to draw lines
   geom_stats(type = "percent") + # Add quadrant percentages
   # Add biexponential scaling to both axes for better visualization
   scale_x_flowjo_biexp() +
