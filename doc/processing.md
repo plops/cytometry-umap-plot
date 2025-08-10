@@ -391,3 +391,89 @@ improved panel for this experiment:
 If you were to repeat this experiment, adopting this new panel would
 be the single most effective way to improve the quality and
 reliability of your flow cytometry results.
+
+
+## Some more questions
+
+```
+Can i use the measurements from the different FCS files to
+validate the crossover matrix? for which entries of the matrix would
+that work? are the flow cytometers that pulse the different lasers or
+have cells flow through microfluidic channels with separate imaging
+positions for each laser in order to reduce crosstalk?
+```
+
+
+### **1. Can Experimental FCS Files Validate the Spillover Matrix?**
+
+The short answer is **no, you cannot reliably use your fully stained experimental files to validate the entire crossover (spillover) matrix.** The process of calculating spillover requires single-positive controls, where the signal from each fluorochrome can be isolated.
+
+In a fully stained experimental sample (e.g.,
+`Spleenocytes_Tcells_Vaccinated_Saline_004.fcs`), a single cell can be
+positive for multiple markers simultaneously (e.g., a T-cell is both
+CD3+ and CD4+). When you detect light in the CD4 channel
+(`Comp-BV786-A`), you have no way of knowing what portion of that
+signal is genuine fluorescence from the BV786 dye and what portion is
+spillover from the APC dye on the CD3 marker. It's like trying to
+solve an equation with multiple unknowns (`Total Signal = Signal_A +
+Spillover_B + Spillover_C...`) without any reference values.
+
+However, you **can use your control files to validate specific, critical entries in the matrix.**
+
+#### **For Which Matrix Entries Would Validation Work?**
+
+Your experimental design includes samples that are perfect for this
+purpose: the T-cell depletion controls. These act as invaluable
+**in-situ biological controls** that create mutually exclusive
+populations.
+
+1.  **Using `Spleenocytes_Tcells_Vaccinated_aCD8_003.fcs` (CD8-depleted sample):**
+    *   **Purpose:** This sample should contain a healthy population of CD4+ T-cells but be almost entirely devoid of CD8+ T-cells. The remaining CD3+/CD4+ cells are effectively a "single-positive" population for the CD4 marker within the T-cell gate.
+    *   **Matrix Entries Validated:** You can use this population to check the spillover **FROM** the CD4 fluorophore (`BV786`) **INTO** every other channel.
+    *   **How to Validate:** Gate on your live, single, CD3+ T-cells. Now, look at the CD4+ population on a plot of CD4 (`Comp-BV786-A`) vs. CD8 (`Comp-PE-A`). If the compensation is correct, this population should form a tight cluster that is perfectly vertical, not slanted. If it slants upwards to the right, it's under-compensated. If it "smiles" or slants downwards, it's over-compensated. You can repeat this by plotting CD4 against every other fluorochrome in your panel; the population should always be flat along the other axes.
+
+2.  **Using `Spleenocytes_Tcells_Vaccinated_GK15_006.fcs` (CD4-depleted sample):**
+    *   **Purpose:** This sample is the mirror image of the above. It contains CD8+ T-cells but should have no CD4+ T-cells. The CD3+/CD8+ population acts as a single-positive control for the CD8 marker.
+    *   **Matrix Entries Validated:** You can check the spillover **FROM** the CD8 fluorophore (`PE`) **INTO** every other channel, most importantly the CD4 channel (`BV786`).
+    *   **How to Validate:** Gate on your live, single, CD3+ T-cells. On the CD4 vs. CD8 plot, the CD8+ population should form a tight cluster that is perfectly horizontal. Any upward or downward slope indicates an incorrect compensation value for the PE -> BV786 spillover.
+
+3.  **Using `Spleenocytes_Tcells_Rag2KO_005.fcs`:**
+    *   **Purpose:** This sample has no mature T-cells (no CD3, CD4, or CD8).
+    *   **What it Validates:** This file doesn't validate the spillover percentages, but it powerfully validates the **position of your negative gates**. After compensation, when you look at the splenocytes from this mouse, there should be virtually no events inside your CD3+, CD4+, or CD8+ gates. This confirms that your gates are not incorrectly including background noise or non-specific staining.
+
+### **2. Cytometer Technology to Reduce Crosstalk**
+
+Yes, modern flow cytometers employ sophisticated methods to minimize
+crosstalk, primarily by preventing fluorochromes from being excited by
+the wrong laser. Your assumption is correct.
+
+#### **Spatial Separation of Laser Interrogation Points**
+
+This is the most common and effective method used in multi-laser
+cytometers like the BD FACSCelesta from your study.
+
+*   **How it Works:** The lasers are not focused on the same point in the flow cell. Instead, they are aligned in a series, physically separated by a small distance. A cell flowing through the microfluidic channel passes through the beam of the first laser, then the second, then the third in rapid succession.
+*   **The Role of Electronic Delay:** The cytometer's electronics know the exact time it takes for a cell to travel from one laser beam to the next. This is called the **laser delay**. The system is programmed to only "listen" to the detectors associated with the second laser during the precise moment the cell is passing through that laser's beam.
+*   **Evidence from Your Data:** The `.wsp` file you provided contains these keywords for each sample:
+    *   `LASER1DELAY: 0.00` (The first laser, Blue, is the reference point)
+    *   `LASER2DELAY: 62.41` (The Red laser is delayed)
+    *   `LASER3DELAY: 30.83` (The Violet laser is delayed)
+*   **What it Prevents:** This design is extremely effective at preventing **cross-laser excitation**. For example, it stops the powerful Blue (488nm) laser from weakly exciting APC, which is supposed to be excited only by the Red (640nm) laser.
+*   **What it DOES NOT Prevent:** Spatial separation **does not** prevent **spectral emission spillover**. When a dye like PE is excited by the Blue laser, its emission spectrum is very broad. That emitted light will still be picked up by multiple detectors in the Blue laser's optical path (e.g., the BB515 and PE-CF594 detectors). This is why a compensation/spillover matrix is still absolutely essential.
+
+#### **Pulsing Lasers (Temporal Separation)**
+
+This is another, less common method where lasers are pulsed on and off
+very rapidly and out of phase with one another. The electronics are
+synchronized to collect data only when a specific laser is on. It
+achieves the same goal as spatial separation—preventing cross-laser
+excitation.
+
+#### **The Modern Solution: Spectral Cytometry**
+
+The newest generation of instruments takes a completely different
+approach.
+
+*   **Conventional Cytometry:** Uses a series of filters and mirrors to direct a small slice of emitted light to a specific detector (e.g., light between 575nm and 625nm goes to the "PE detector").
+*   **Spectral Cytometry:** Uses prisms or diffraction gratings to capture the **entire emission spectrum** of light from a cell across a wide range of wavelengths. Instead of one value for "PE," it might have 30-60 values describing the full emission curve.
+*   **Unmixing, Not Compensation:** Instead of a spillover matrix, spectral cytometry uses an algorithm called **spectral unmixing**. It uses single-stain controls to learn the unique full-spectrum "fingerprint" of each fluorochrome. Then, for an experimental sample, it mathematically calculates how much of each fingerprint is present in the total light measured from a cell. This is far more powerful and accurate than conventional compensation and allows for the use of dozens of highly overlapping fluorochromes in a single panel.
