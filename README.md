@@ -9,7 +9,10 @@ re-running computationally expensive steps.
 
 
 The LST_Depletion_Analysis project is an attempt to use R libraries to reproduce the cytometry data analysis
-for the example dataset.
+for a random example dataset that I downloaded when I started on this topic:
+
+![Screenshot of the reproduction of the diagram in the paper ](https://raw.githubusercontent.com/plops/cytometry-umap-plot/main/img/comparison_paper_pngquant.png)
+
 
 ### Features
 
