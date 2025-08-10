@@ -406,19 +406,7 @@ positions for each laser in order to reduce crosstalk?
 
 ### **1. Can Experimental FCS Files Validate the Spillover Matrix?**
 
-The short answer is **no, you cannot reliably use your fully stained experimental files to validate the entire crossover (spillover) matrix.** The process of calculating spillover requires single-positive controls, where the signal from each fluorochrome can be isolated.
-
-In a fully stained experimental sample (e.g.,
-`Spleenocytes_Tcells_Vaccinated_Saline_004.fcs`), a single cell can be
-positive for multiple markers simultaneously (e.g., a T-cell is both
-CD3+ and CD4+). When you detect light in the CD4 channel
-(`Comp-BV786-A`), you have no way of knowing what portion of that
-signal is genuine fluorescence from the BV786 dye and what portion is
-spillover from the APC dye on the CD3 marker. It's like trying to
-solve an equation with multiple unknowns (`Total Signal = Signal_A +
-Spillover_B + Spillover_C...`) without any reference values.
-
-However, you **can use your control files to validate specific, critical entries in the matrix.**
+You can use your control files to validate specific, critical entries in the matrix.
 
 #### **For Which Matrix Entries Would Validation Work?**
 
