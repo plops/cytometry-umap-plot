@@ -35,7 +35,11 @@ previous gate.
 *   **Purpose:** To create an initial gate around the population of cells that have the characteristic low side scatter (low granularity) and intermediate forward scatter (medium size) of lymphocytes, separating them from larger cells like macrophages and smaller debris.
 
 **Step 2: Exclude Doublets (Singlet Gating)**
-This is a two-step process to ensure that each analyzed event corresponds to a single cell, not two or more cells stuck together (doublets).
+
+This is a two-step process to ensure that each analyzed event
+corresponds to a single cell, not two or more cells stuck together
+(doublets).
+
 *   **Gate 2a:**
     *   **Gate Name:** `Single Cells`
     *   **Parent Population:** `Lymphocytes`
@@ -98,7 +102,8 @@ the fluorochromes and their potential for crosstalk.
 The spillover matrix is not estimated from the experimental FCS files
 themselves. Instead, it is determined through a dedicated
 **calibration procedure** performed on the measurement device (the BD
-FACSCelesta flow cytometer) *before* running the experimental samples.
+FACSCelesta flow cytometer, Note: I see used ones on sale for 500USD
+to 5000USD on EBay) *before* running the experimental samples.
 
 #### **How the Matrix is Estimated:**
 
