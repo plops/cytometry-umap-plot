@@ -29,6 +29,17 @@ if (length(fcs_files) == 0) {
 }
 fs <- read.flowSet(fcs_files)
 
+# Print the number of FCS files loaded
+cat("Number of FCS files loaded:", length(fs), "\n")
+
+# Print the names of the loaded FCS files and their channels
+cat("Loaded FCS files:\n")
+for (i in seq_along(fs)) {
+  cat(sprintf("File %d: %s\n", i, fs[[i]]@description$FILENAME))
+  cat("Channels:\n")
+  cat(paste(names(fs[[i]]@parameters$desc), collapse = ", "), "\n")
+} 
+
 # -----------------------------------------------------------------------------
 # STEP 0: Compensation
 # -----------------------------------------------------------------------------
