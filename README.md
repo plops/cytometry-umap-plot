@@ -1,4 +1,4 @@
-This project visualizes high-dimensional cytometry data using UMAP
+The cyto-plot project visualizes high-dimensional cytometry data using UMAP
 (Uniform Manifold Approximation and Projection), generating
 interactive plots with Bokeh. The pipeline is optimized for
 performance by leveraging NVIDIA's cuML for GPU-accelerated UMAP
@@ -6,6 +6,10 @@ computation and Joblib for caching intermediate results, which avoids
 re-running computationally expensive steps.
 
 ![Screenshot of the interactive UMAP plot](https://raw.githubusercontent.com/plops/cytometry-umap-plot/main/img/plot.png)
+
+
+The LST_Depletion_Analysis project is an attempt to use R libraries to reproduce the cytometry data analysis
+for the example dataset.
 
 ### Features
 
