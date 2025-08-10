@@ -203,12 +203,13 @@ polygon or rectangle.
 
 ### **The Role of FSC-H in Gating**
 
-You correctly identified that FSC-H is used for doublet exclusion. Its
-appearance on the Y-axis for the **Live/Dead** and **CD3** gates
-serves a different but important purpose: **visualization and clear
-separation**.
+FSC-H is used for doublet exclusion. Its appearance on the Y-axis for
+the **Live/Dead** and **CD3** gates serves a different but important
+purpose: **visualization and clear separation**.
 
-When you want to make a gating decision based on a single fluorescent marker (like the Live/Dead stain or CD3), you have two options:
+When you want to make a gating decision based on a single fluorescent
+marker (like the Live/Dead stain or CD3), you have two options:
+
 1.  **1D Histogram:** Plot the intensity of the marker on a single axis. This shows positive and negative peaks, but if they are not well-separated, it can be difficult to decide exactly where to place the gate.
 2.  **2D Dot Plot:** Plot the marker of interest on the X-axis against another parameter on the Y-axis. This spreads the data into two dimensions.
 
@@ -227,13 +228,13 @@ selection based on fluorescence.
 The BD FACSCelesta cytometer used in this study was configured with
 three lasers: Violet (405 nm), Blue (488 nm), and Red (640 nm).
 
-| Decision Step | Gating Parameters | Fluorescence Used? | Excitation Laser (Wavelength) | Fluorochrome(s) & Marker(s) | Key Crosstalk Issues / Notes |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| 1. Lymphocytes | FSC-A vs. SSC-A | No | N/A | N/A | Based on physical properties (size/granularity). |
-| 2. Single Cells | FSC-A/H, SSC-A/H | No | N/A | N/A | Based on physical properties (pulse shape). |
-| 3. Live Cells | `Comp-PerCP-Cy5.5` | Yes | Blue (488 nm) | PerCP-Cy5.5 (Live/Dead stain) | **Tandem Dye.** PerCP has significant spillover into BV650, BV786, and APC, making compensation critical. |
-| 4. CD3+ T-Cells | `Comp-APC-A` | Yes | Red (640 nm) | APC (CD3) | APC spills significantly into the APC-R700 detector (14.87%) and has minor spillover into APC-Cy7 (5.43%). |
-| 5. CD4/CD8 | `Comp-BV786-A` & `Comp-PE-A` | Yes | Violet (405 nm) & Blue (488 nm) | BV786 (CD4), PE (CD8) | **BV786:** Spills into APC-R700 (0.31%) and APC-Cy7 (3.76%). **PE:** Spills significantly into PE-CF594 (29.92%) and BV605 (14.15%). |
+| Decision Step   | Gating Parameters            | Fluorescence Used? | Excitation Laser (Wavelength)   | Fluorochrome(s) & Marker(s)   | Key Crosstalk Issues / Notes                                                                                                         |
+| :---            | :---                         | :---               | :---                            | :---                          | :---                                                                                                                                 |
+| 1. Lymphocytes  | FSC-A vs. SSC-A              | No                 | N/A                             | N/A                           | Based on physical properties (size/granularity).                                                                                     |
+| 2. Single Cells | FSC-A/H, SSC-A/H             | No                 | N/A                             | N/A                           | Based on physical properties (pulse shape).                                                                                          |
+| 3. Live Cells   | `Comp-PerCP-Cy5.5`           | Yes                | Blue (488 nm)                   | PerCP-Cy5.5 (Live/Dead stain) | **Tandem Dye.** PerCP has significant spillover into BV650, BV786, and APC, making compensation critical.                            |
+| 4. CD3+ T-Cells | `Comp-APC-A`                 | Yes                | Red (640 nm)                    | APC (CD3)                     | APC spills significantly into the APC-R700 detector (14.87%) and has minor spillover into APC-Cy7 (5.43%).                           |
+| 5. CD4/CD8      | `Comp-BV786-A` & `Comp-PE-A` | Yes                | Violet (405 nm) & Blue (488 nm) | BV786 (CD4), PE (CD8)         | **BV786:** Spills into APC-R700 (0.31%) and APC-Cy7 (3.76%). **PE:** Spills significantly into PE-CF594 (29.92%) and BV605 (14.15%). |
 
 **Tandem Dyes and Crosstalk:**
 
@@ -242,3 +243,75 @@ This panel heavily relies on **tandem dyes**, specifically
 
 *   **How they work:** Tandem dyes consist of two covalently linked fluorochromes. The "donor" molecule (e.g., PE or APC) absorbs energy from the laser and transfers it to an "acceptor" molecule (e.g., CF594 or the R700 dye) through a process called Förster Resonance Energy Transfer (FRET). The acceptor then emits light at a longer wavelength than the donor would have. This allows a single laser to excite multiple dyes that emit at very different wavelengths, greatly expanding the number of markers that can be analyzed simultaneously.
 *   **Crosstalk Implication:** The complexity of tandem dyes makes accurate compensation essential. Any degradation of the acceptor dye can "uncouple" the tandem, causing the donor molecule to fluoresce at its original wavelength. This leads to unexpected and incorrect signals in other detectors, which can only be corrected with a robust, freshly prepared set of single-stain compensation controls. As seen in the matrix, there is significant crosstalk between dyes excited by the same laser (e.g., the Brilliant Violets) and even between dyes on different lasers due to their broad emission spectra.
+
+
+## Discussion of the different FCS Files
+
+Not all files are processed in the same way, because some of them are
+**controls** specifically designed to help establish the correct
+position and boundaries for the gates. Once the gates are defined
+using these controls, that same gating strategy is then applied
+uniformly to all the **experimental samples** for analysis.
+
+Here is a detailed breakdown of how these different datasets were used
+to establish the gate levels.
+
+---
+
+### **Detailed Role of Each File in Establishing Gates**
+
+The core principle of setting gates in flow cytometry is to
+distinguish between a "negative" population (cells without the marker,
+or with only background fluorescence) and a "positive" population
+(cells that have specifically bound the fluorescent antibody). This is
+achieved using a combination of unstained, biological, and
+fluorescence-minus-one (FMO) controls.
+
+#### **1. `Spleenocytes_Tcells_Unstained_control_001.fcs`**
+
+*   **Sample Type:** **Unstained Negative Control**. These are splenocytes from a mouse that have not been stained with any fluorescent antibodies.
+*   **Primary Role in Gating:**
+    *   **Establishing Autofluorescence:** This sample is fundamental. It is used to determine the baseline level of fluorescence for the cells themselves, known as autofluorescence.
+    *   **Setting Initial Fluorescence Gates:** The unstained population is used to set the primary boundaries for all fluorescence-based gates. On any fluorescence plot (e.g., CD3 vs. CD4), the dense cloud of cells from this unstained sample defines the bottom-left corner of the plot—the true double-negative region. The gates for positive signals (like the `CD3+` gate) are drawn so that virtually all of the unstained population falls outside of them.
+
+#### **2. `Spleenocytes_Tcells_Rag2KO_005.fcs`**
+
+*   **Sample Type:** **Biological Negative Control**. As mentioned in the paper, Rag2-/- (or Rag2KO) mice lack mature B-cells and T-cells. Their spleens contain other immune cells (macrophages, dendritic cells, NK cells) but are devoid of the CD3+, CD4+, and CD8+ cells being measured.
+*   **Primary Role in Gating:**
+    *   **Validating the `CD3+` Gate:** This is a powerful control to confirm that the `CD3+` gate is correctly placed and that the anti-CD3 antibody is not binding non-specifically to other cell types. After applying the initial Lymphocyte and Singlet gates, the data from this sample is viewed on the CD3 plot (`Comp-APC-A` vs. FSC-H). The result should show a population that is entirely negative for CD3. This confirms that any cells appearing in the `CD3+` gate in the experimental samples are genuinely T-cells.
+    *   **Confirming CD4/CD8 Gate Placement:** Similarly, it verifies that there are no non-T-cells appearing in the CD4 or CD8 gates.
+
+#### **3. `Spleenocytes_Tcells_FMO- no CD4 staining_002.fcs`**
+
+*   **Sample Type:** **Fluorescence Minus One (FMO) Control**. This is a crucial control for multi-color experiments. This sample contains cells stained with **all** the antibodies in the panel *except for one*—in this case, the anti-CD4 antibody (conjugated to BV786).
+*   **Primary Role in Gating:**
+    *   **Accurately Setting the CD4 Positive Gate:** The purpose of this control is to reveal the "spread" of background fluorescence into the CD4 channel (`Comp-BV786-A`) caused by spillover from all the other fluorochromes in the panel (e.g., from PE, APC, BV510, etc.).
+    *   **How it's used:**
+        1.  The FMO sample is gated down to the `CD3+` population.
+        2.  This `CD3+` population is then viewed on the final CD4 vs. CD8 plot.
+        3.  Since there is no anti-CD4 antibody, any signal seen along the CD4 axis is not a true signal but rather the combined background and spillover from other dyes. This creates a "smear" or "tail" of fluorescence in the CD4 channel.
+        4.  The horizontal line of the quadrant gate that separates CD4-negative from CD4-positive cells is then drawn **just above** this smear. This ensures that only cells with fluorescence significantly higher than the combined background are counted as truly CD4-positive. Without this FMO control, the gate might be drawn too low, incorrectly including CD4-negative cells in the count.
+
+#### **4. The Experimental Samples**
+
+*   **Files:**
+    *   `Spleenocytes_Tcells_Vaccinated_Saline_004.fcs` (The experimental control group, no T-cell depletion).
+    *   `Spleenocytes_Tcells_Vaccinated_aCD8_003.fcs` (The CD8-depleted group).
+    *   `Spleenocytes_Tcells_Vaccinated_GK15_006.fcs` (The CD4-depleted group, GK1.5 is the antibody clone name).
+    *   `Spleenocytes_Tcells_Vaccinated_GK15__2_007.fcs` & `..._GK15__3_009.fcs` (Replicates of the CD4-depleted group).
+*   **Processing:**
+    *   These files are processed using the **exact same gating hierarchy and gate positions** that were established using the Unstained, Rag2KO, and FMO controls.
+    *   The purpose here is not to set the gates, but to **apply the pre-defined gates** to quantify the cell populations and measure the outcome of the experiment—namely, to confirm the efficacy of the antibody depletion as shown in the dot plots of Figure 2B. For example, the `Vaccinated_aCD8` sample should show a near-complete absence of cells in the CD8+ quadrants.
+
+---
+
+### **Summary Overview**
+
+| File Name                          | Sample Type                 | Primary Role in Gating                                                                               |
+| :---                               | :---                        | :---                                                                                                 |
+| `..._Unstained_control_001.fcs`    | Unstained Control           | Sets the baseline for autofluorescence; defines the absolute negative for all markers.               |
+| `..._Rag2KO_005.fcs`               | Biological Negative Control | Confirms the specificity of the `CD3+` gate by showing a true T-cell-negative population.            |
+| `..._FMO- no CD4 staining_002.fcs` | FMO Control                 | Determines the precise boundary for the `CD4+` gate by accounting for spillover from all other dyes. |
+| `..._Vaccinated_Saline_004.fcs`    | Experimental Control        | Analysis sample; gates are applied to it to get the baseline T-cell distribution.                    |
+| `..._Vaccinated_aCD8_003.fcs`      | Experimental Sample         | Analysis sample; gates are applied to measure the efficacy of CD8 T-cell depletion.                  |
+| `..._Vaccinated_GK15...` (all)     | Experimental Samples        | Analysis samples; gates are applied to measure the efficacy of CD4 T-cell depletion.                 |
