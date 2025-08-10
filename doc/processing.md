@@ -315,3 +315,79 @@ fluorescence-minus-one (FMO) controls.
 | `..._Vaccinated_Saline_004.fcs`    | Experimental Control        | Analysis sample; gates are applied to it to get the baseline T-cell distribution.                    |
 | `..._Vaccinated_aCD8_003.fcs`      | Experimental Sample         | Analysis sample; gates are applied to measure the efficacy of CD8 T-cell depletion.                  |
 | `..._Vaccinated_GK15...` (all)     | Experimental Samples        | Analysis samples; gates are applied to measure the efficacy of CD4 T-cell depletion.                 |
+
+
+## Discussion of potential improvements
+
+Would it be useful to switch fluorophores and antibodies if the
+experiment were to be repeated and crosstalk should be minimized?
+
+Based on a detailed analysis of the spillover matrix from the
+experiment, the answer is an emphatic **yes, you should absolutely
+switch up the fluorophores if you were to repeat this experiment.**
+
+While the original panel was functional enough to produce the data for
+the paper, it has significant optical limitations that introduce
+unnecessary complexity and reduce data quality. A redesigned panel
+using more modern fluorochromes would yield cleaner, more reliable,
+and easier-to-analyze results.
+
+### **Critique of the Original Fluorophore Panel**
+
+The primary issue with the original panel lies in the choice of
+fluorophore for the viability stain and its massive spectral spillover
+into key analytical channels. Let's analyze the specific problems
+revealed by the spillover matrix:
+
+1.  **The Viability Dye Creates Massive Spillover:** The Live/Dead stain was on **PerCP-Cy5.5**. Looking at the spillover matrix, this dye spills significantly into two of your most critical markers:
+    *   **16.65% spillover into BV786 (CD4)**
+    *   **15.85% spillover into APC (CD3)**
+
+    This is a major flaw in the panel design. Dead cells, which stain
+   extremely brightly with a viability dye, will appear as
+   false-positive "smears" in your CD4 and CD3 detectors. While
+   compensation corrects for the median fluorescence intensity, it
+   cannot correct for the "spreading error" of the data. This
+   significantly compresses the space available for your actual
+   positive signals, reduces the resolution between your true negative
+   and positive populations, and makes setting the gates much more
+   difficult and subjective.
+
+2.  **Use of Spectrally Broad Fluorophores:** The panel used **PE (for CD8)**. Phycoerythrin (PE) is known for being very bright but also having a very broad emission spectrum. It contributed **29.92%** spillover into the PE-CF594 channel and **14.15%** into the BV605 channel. While these channels weren't used for the final CD4/CD8 plot, this demonstrates how much "noise" PE adds to the system, which can complicate the analysis if more markers were to be added.
+
+3.  **Suboptimal Marker-Fluorochrome Pairing:** CD3 is one of the most highly expressed markers on T-cells. Pairing it with a very bright dye like APC is acceptable, but not optimal. Ideally, the brightest fluorophores are reserved for the rarest or most dimly expressed antigens. In a simple panel like this, it's less of an issue, but it's not best practice.
+
+---
+
+### **Principles for an Improved Panel Design**
+
+When redesigning the panel, the goal is to maximize the
+signal-to-noise ratio by minimizing spillover between fluorochromes.
+
+1.  **Isolate the Viability Dye:** The viability stain should be on a fluorophore that has minimal spectral overlap with any other markers in the panel. The best way to achieve this is to place it in a channel that is spectrally distant or, ideally, excited by a different laser from the key markers.
+2.  **Match Fluorophore Brightness to Antigen Density:** Assign dimmer, stable fluorophores to highly abundant markers (like CD3, CD4, and CD8) to minimize spillover spread. Reserve the brightest dyes for markers that are rare or have low expression levels.
+3.  **Use Modern, Narrow-Spectrum Dyes:** Newer families of dyes (e.g., Brilliant Violets, Brilliant Blues, NovaFluors) are engineered to be brighter and have narrower emission spectra than older dyes like PE and PerCP-tandems. This directly translates to less spillover and cleaner data.
+
+---
+
+### **A Proposed Optimized Panel for the Experiment**
+
+Given the same 3-laser BD FACSCelesta cytometer, here is a vastly
+improved panel for this experiment:
+
+| Marker | Original Fluorophore | **Proposed New Fluorophore** | Excitation Laser | Rationale for Change |
+| :--- | :--- | :--- | :--- | :--- |
+| **Live/Dead** | PerCP-Cy5.5 | **Zombie Violet™ (or similar)** | **Violet (405 nm)** | **CRITICAL FIX:** Moves the viability stain to the violet laser, completely isolating it from the blue and red laser-excited markers. This eliminates the primary source of spillover into the CD3 and CD4 channels, dramatically improving data quality. |
+| **CD3** | APC | **BB515** | **Blue (488 nm)** | BB515 is a bright and clean alternative to FITC, excited by the blue laser. This separates it from CD4 and CD8, which will be moved to other lasers, minimizing crosstalk. |
+| **CD4** | BV786 | **APC** | **Red (640 nm)** | APC is a bright, reliable dye excited by the red laser. By placing CD4 here, it is cleanly separated from CD3 (Blue laser) and CD8 (Violet laser), resulting in virtually no spillover between the key T-cell lineage markers. |
+| **CD8** | PE | **BV605** | **Violet (405 nm)** | BV605 is an extremely bright Brilliant Violet dye with a much narrower emission spectrum than PE. This significantly reduces spreading error into neighboring channels, providing a much cleaner signal for the CD8 population. |
+
+#### **Justification for the New Panel:**
+
+*   **Clean Separation of Signals:** The key markers are now spread across all three lasers, which is the gold standard for minimizing crosstalk. CD8 is on the Violet laser, CD3 is on the Blue laser, and CD4 is on the Red laser.
+*   **Problem Solved:** The massive spillover from the viability dye into the analytical channels is completely eliminated.
+*   **Superior Fluorochromes:** PE has been replaced with the brighter and cleaner BV605. PerCP-Cy5.5 has been replaced with a modern fixable viability dye. The result is a panel that is more robust, will produce cleaner data, and will make the gating process far more straightforward and reproducible.
+
+If you were to repeat this experiment, adopting this new panel would
+be the single most effective way to improve the quality and
+reliability of your flow cytometry results.
