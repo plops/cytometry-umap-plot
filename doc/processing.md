@@ -95,7 +95,10 @@ the fluorochromes and their potential for crosstalk.
 
 ### **The Spillover Matrix: Estimation and Values**
 
-The spillover matrix is not estimated from the experimental FCS files themselves. Instead, it is determined through a dedicated **calibration procedure** performed on the measurement device (the BD FACSCelesta flow cytometer) *before* running the experimental samples.
+The spillover matrix is not estimated from the experimental FCS files
+themselves. Instead, it is determined through a dedicated
+**calibration procedure** performed on the measurement device (the BD
+FACSCelesta flow cytometer) *before* running the experimental samples.
 
 #### **How the Matrix is Estimated:**
 
@@ -106,7 +109,10 @@ The spillover matrix is not estimated from the experimental FCS files themselves
 
 #### **Spillover Matrix Values from the Workspace File**
 
-The exact spillover matrix used in this analysis is defined in the `LST_Depletion_check_14-Feb-2022.wsp` file. The values represent the percentage of spillover *from* the fluorochrome in the row *into* the fluorochrome in the column.
+The exact spillover matrix used in this analysis is defined in the
+`LST_Depletion_check_14-Feb-2022.wsp` file. The values represent the
+percentage of spillover *from* the fluorochrome in the row *into* the
+fluorochrome in the column.
 
 | Spilling FROM ↓ | INTO: BV421 | INTO: BV510 | INTO: BV605 | INTO: BV650 | INTO: BV786 | INTO: BB515 | INTO: PE | INTO: PE-CF594 | INTO: PerCP-Cy5.5 | INTO: APC | INTO: APC-R700 | INTO: APC-Cy7 |
 | :---            |        :--- |        :--- |        :--- |        :--- |        :--- |        :--- |     :--- |           :--- |              :--- |      :--- |           :--- |          :--- |
@@ -125,7 +131,11 @@ The exact spillover matrix used in this analysis is defined in the `LST_Depletio
 
 ### **Gate Definitions and Computations**
 
-Below are the exact definitions of the gates used in the hierarchical analysis, extracted directly from the `.wsp` file. The computation is a geometric test: for an event to be included in a sub-population, its parameter values must fall within the boundaries of the defined polygon or rectangle.
+Below are the exact definitions of the gates used in the hierarchical
+analysis, extracted directly from the `.wsp` file. The computation is
+a geometric test: for an event to be included in a sub-population, its
+parameter values must fall within the boundaries of the defined
+polygon or rectangle.
 
 **Step 1: Lymphocytes Gate**
 *   **Gate Type:** Polygon
@@ -188,17 +198,29 @@ Below are the exact definitions of the gates used in the hierarchical analysis, 
 
 ### **The Role of FSC-H in Gating**
 
-You correctly identified that FSC-H is used for doublet exclusion. Its appearance on the Y-axis for the **Live/Dead** and **CD3** gates serves a different but important purpose: **visualization and clear separation**.
+You correctly identified that FSC-H is used for doublet exclusion. Its
+appearance on the Y-axis for the **Live/Dead** and **CD3** gates
+serves a different but important purpose: **visualization and clear
+separation**.
 
 When you want to make a gating decision based on a single fluorescent marker (like the Live/Dead stain or CD3), you have two options:
 1.  **1D Histogram:** Plot the intensity of the marker on a single axis. This shows positive and negative peaks, but if they are not well-separated, it can be difficult to decide exactly where to place the gate.
 2.  **2D Dot Plot:** Plot the marker of interest on the X-axis against another parameter on the Y-axis. This spreads the data into two dimensions.
 
-FSC-H (Forward Scatter - Height) is an excellent choice for the Y-axis in this context because it is a non-fluorescent, physical parameter of the cell. Using it helps to visually "stretch" the cell cloud vertically, making the distinction between the negative and positive populations on the X-axis much clearer. This allows the researcher to draw a more confident and accurate rectangular gate around the population of interest (e.g., all `Live/Dead-negative` cells or all `CD3-positive` cells) without the Y-axis parameter influencing the selection based on fluorescence.
+FSC-H (Forward Scatter - Height) is an excellent choice for the Y-axis
+in this context because it is a non-fluorescent, physical parameter of
+the cell. Using it helps to visually "stretch" the cell cloud
+vertically, making the distinction between the negative and positive
+populations on the X-axis much clearer. This allows the researcher to
+draw a more confident and accurate rectangular gate around the
+population of interest (e.g., all `Live/Dead-negative` cells or all
+`CD3-positive` cells) without the Y-axis parameter influencing the
+selection based on fluorescence.
 
 ### **Excitation Wavelengths, Fluorochromes, and Crosstalk Overview**
 
-The BD FACSCelesta cytometer used in this study was configured with three lasers: Violet (405 nm), Blue (488 nm), and Red (640 nm).
+The BD FACSCelesta cytometer used in this study was configured with
+three lasers: Violet (405 nm), Blue (488 nm), and Red (640 nm).
 
 | Decision Step | Gating Parameters | Fluorescence Used? | Excitation Laser (Wavelength) | Fluorochrome(s) & Marker(s) | Key Crosstalk Issues / Notes |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -210,7 +232,8 @@ The BD FACSCelesta cytometer used in this study was configured with three lasers
 
 **Tandem Dyes and Crosstalk:**
 
-This panel heavily relies on **tandem dyes**, specifically **PerCP-Cy5.5** and **APC-R700**.
+This panel heavily relies on **tandem dyes**, specifically
+**PerCP-Cy5.5** and **APC-R700**.
 
 *   **How they work:** Tandem dyes consist of two covalently linked fluorochromes. The "donor" molecule (e.g., PE or APC) absorbs energy from the laser and transfers it to an "acceptor" molecule (e.g., CF594 or the R700 dye) through a process called Förster Resonance Energy Transfer (FRET). The acceptor then emits light at a longer wavelength than the donor would have. This allows a single laser to excite multiple dyes that emit at very different wavelengths, greatly expanding the number of markers that can be analyzed simultaneously.
 *   **Crosstalk Implication:** The complexity of tandem dyes makes accurate compensation essential. Any degradation of the acceptor dye can "uncouple" the tandem, causing the donor molecule to fluoresce at its original wavelength. This leads to unexpected and incorrect signals in other detectors, which can only be corrected with a robust, freshly prepared set of single-stain compensation controls. As seen in the matrix, there is significant crosstalk between dyes excited by the same laser (e.g., the Brilliant Violets) and even between dyes on different lasers due to their broad emission spectra.
