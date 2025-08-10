@@ -100,7 +100,7 @@ required for this data.
 
 
 Here is a detailed explanation of what each FCS column represents in
-the context of this study:
+the context of this study. An (estimated) cytometry data processing procedure is discussed in https://github.com/plops/cytometry-umap-plot/blob/main/doc/processing.md:
 
 ### **Light Scatter Columns: Defining Basic Cell Properties**
 
